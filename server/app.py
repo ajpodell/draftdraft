@@ -12,7 +12,7 @@ app = Flask(__name__)
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
-    return 'Hey Greg and Dan! Let Draft Draft Development begin!'
+    return 'Hey Greg and Dan! Let our Draft Draft Development begin!'
 
 @app.route('/success/<name>')
 def success(name):
