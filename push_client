@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# This was for heroku - right now we arent deployed
+git subtree push --prefix server heroku main

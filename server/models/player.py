@@ -1,10 +1,4 @@
-# from app import db
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects.postgresql import JSON
-
-# Aaron: this is going to end up with us having a circular dependency
-# ignore that - you moved it out of app - now it needs to go in its own base probably
-db = SQLAlchemy()
+from models.base import db
 
 class Player(db.Model):
     __tablename__ = 'player'
