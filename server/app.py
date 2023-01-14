@@ -1,9 +1,11 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
-from flask import Flask, redirect, url_for, request
+from flask import Flask, redirect, url_for, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
-from models.player import db, Player
+from models.base import db
+from models.player import Player
+from models.selection import Selection
 
  
 # Flask constructor takes the name of
@@ -53,6 +55,29 @@ def login():
 def players():
     players = db.session.query(Player).all()
     return list(player.__repr__() for player in players)
+
+@app.route('/add_selection', methods=['POST'])
+def add_selection():
+    print(request.form)
+    # return redirect(url_for(''))
+    # return render_template('app.html')
+
+    form = request.form
+    selection = Selection(player_name=form['player_name'], team_name=form['team_name'])
+    print(selection)
+    db.session.add(selection)
+    db.session.commit()
+    return {}
+
+@app.route('/draft')  # would be cool to have a "league" template var
+def view_draft():
+    print('hi')
+    all_picks = db.session.query(Selection).all()
+    print(all_picks)
+    # make the object returnable. 
+    # can probably use jsonify or put this in the object
+    ret_val = [(s.draft_draft_selection, s.team_name, s.player_name) for s in all_picks]
+    return ret_val
  
 # main driver function
 if __name__ == '__main__':
