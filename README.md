@@ -45,7 +45,8 @@ Jan 12
 # all of this is assumed to be done from within the `server` directory
 
 # create a virtual environment
-## do this however you want, but I'm using pyenv to activate a venv called draftdraft
+* do this however you want, but I'm using pyenv to activate a venv called draftdraft
+* https://towardsdatascience.com/managing-virtual-environment-with-pyenv-ae6f3fb835f8
 
 # install the requirements
 python3 -m pip install -r requirements.txt
