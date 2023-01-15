@@ -30,7 +30,7 @@ def render_home():
     """ render the home page.
         Centralizing this in case want to call it in more places and also if move the homepage.
     """
-    return render_template('index.html')
+    return render_template('app.html')
  
 # The route() function of the Flask class is a decorator,
 # which tells the application which URL should call

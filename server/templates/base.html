@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- <title>{% block title %} {% endblock %} - DraftDraft</title> -->
+        <title>DraftDraft</title>
+        <!-- probably dont care about this
+        <style>
+            nav a {
+                color: #d64161;
+                font-size: 3em;
+                margin-left: 50px;
+                text-decoration: none;
+            }
+        </style>
+        -->
+        <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}"> -->
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+        {% block stylesheet %} {% endblock %}
+    </head>
+    <body>     
+        <div class="content">
+            The Draft
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>

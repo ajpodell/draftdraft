@@ -1,10 +1,11 @@
-<!-- move this to have index be the html/body and then have content templates -->
-<html>
-    <head>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}">
-    </head>
-    <body>     
-        The Draft!
+{% extends "base.html" %}
+
+<!-- wonder if theres a better way to get stylesheets in. there must be. -->
+{% block stylesheet %}
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}">
+{% endblock %}
+
+{% block content %}
         <table class='draft_table'>
             <tr>
                 <th>Pick</th>
@@ -19,14 +20,4 @@
             </tr>
             {% endfor %}
         </table>
-        <!--
-        <div style="width: 50%; margin: auto">
-            {% for selection in selections %}
-            <div style="padding: 10px; background-color: #EEE; margin: 20px">
-                <p style="font-size: 24px">{{ selection }}</p>
-            </div>
-            {% endfor %}
-        </div>
-        -->
-    </body>
-</html>
+{% endblock %}
