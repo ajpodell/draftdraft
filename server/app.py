@@ -24,6 +24,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://localhost/draftdraft"
 db.init_app(app)
 
 
+
+# can you have Flask stuff floating? 
+def render_home():
+    """ render the home page.
+        Centralizing this in case want to call it in more places and also if move the homepage.
+    """
+    return render_template('index.html')
  
 # The route() function of the Flask class is a decorator,
 # which tells the application which URL should call
@@ -31,8 +38,7 @@ db.init_app(app)
 @app.route('/')
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
-    print('this?')
-    return 'Hey Greg and Dan! Let our Draft Draft Development begin!'
+    return render_home()
 
 @app.route('/success/<name>')
 def success(name):

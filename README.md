@@ -28,16 +28,17 @@ Project
 * set up tables + alembic?
 * login? (later)
 * dockerize the env
-
-
-
-local
+* actually learn markdown
 * autoenv? -- auto move to virtualenv when entering a directory
 
 
+Jan 15
+* considering moving away from client & server and using flask templates - will be giving this a shot
+* following this: https://www.digitalocean.com/community/tutorials/how-to-use-templates-in-a-flask-application
 
 Jan 12
-- trying to set up a local db
+- trying to set up a local db -- db_setup.py is functional
+- not using alembic - just flask_sqlalchemy. thats enough for right now.
 
 
 .h3 Getting Going
@@ -56,7 +57,6 @@ python3 -m pip install -r requirements.txt
 # put the project in your path. (I dont fully understand this part)
 ## python setup.py develop
 
-# here
 # set up the tables within the db
 ## ./db_setup.py 
 
