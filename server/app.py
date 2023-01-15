@@ -77,17 +77,19 @@ def add_selection():
 
 @app.route('/draft')  # would be cool to have a "league" template var
 def view_draft():
-    print('hi')
     all_picks = db.session.query(Selection).all()
-    print(all_picks)
     # make the object returnable. 
     # can probably use jsonify or put this in the object
-    ret_val = [(s.draft_draft_selection, s.team_name, s.player_name) for s in all_picks]
-    return ret_val
+    # selections = [[s.draft_draft_selection, s.team_name, s.player_name] for s in all_picks]
+    return render_template('draft.html', selections=all_picks)
  
 # main driver function
 if __name__ == '__main__':
  
     # run() method of Flask class runs the application
     # on the local development server.
+    # TODO: this should be like an "if debug" type of thing -- 
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    print('testing')
+
     app.run(debug=True)

@@ -1,0 +1,32 @@
+<!-- move this to have index be the html/body and then have content templates -->
+<html>
+    <head>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}">
+    </head>
+    <body>     
+        The Draft!
+        <table class='draft_table'>
+            <tr>
+                <th>Pick</th>
+                <th>Team</th>
+                <th>Player</th>
+            </tr>
+            {% for selection in selections %}
+            <tr style="padding: 10px; background-color: #EEE; margin: 20px">
+                <td>{{ selection.draft_draft_selection }}</td>
+                <td>{{ selection.team_name }}</td>
+                <td>{{ selection.player_name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <!--
+        <div style="width: 50%; margin: auto">
+            {% for selection in selections %}
+            <div style="padding: 10px; background-color: #EEE; margin: 20px">
+                <p style="font-size: 24px">{{ selection }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        -->
+    </body>
+</html>

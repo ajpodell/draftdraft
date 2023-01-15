@@ -9,17 +9,16 @@ current thoughts:
 
 
 Aaron - you came back and forgot this:
-* running with `gunicorn --reload app:app`
+* running with `gunicorn --reload --reload_extra_file "templates" app:app`
 * port 8000 worked, but 5000 did not (but maybe you just fucked it up)
 * you are using pyenv to manage your virtual environment
 * you named the pyenv draftdraft and you activate it with `pyenv activate draftdraft` from inside draftdraft/server
 
-
-
-Design Doc
+technologies
 * postgres 15
 * python (i have 3.10)
-* react?
+* gunicorn - version 20.1.0
+* react? -- not yet
 
 
 
@@ -30,6 +29,7 @@ Project
 * dockerize the env
 * actually learn markdown
 * autoenv? -- auto move to virtualenv when entering a directory
+* configs - local/debug - will circle back when looking to deploy or do anything outside of debug mode
 
 
 Jan 15
