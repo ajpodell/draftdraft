@@ -29,6 +29,7 @@ Project
 * dockerize the env
 * actually learn markdown
 * autoenv? -- auto move to virtualenv when entering a directory
+** ended up doing this via `pyenv local draftdraft`
 * configs - local/debug - will circle back when looking to deploy or do anything outside of debug mode
 
 Jan 16
