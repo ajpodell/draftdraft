@@ -8,8 +8,8 @@ current thoughts:
 
 
 
-Aaron - you came back and forgot this:
-* running with `gunicorn --reload --reload_extra_file "templates" app:app`
+Some things to know about running
+* running with `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
 * port 8000 worked, but 5000 did not (but maybe you just fucked it up)
 * you are using pyenv to manage your virtual environment
 * you named the pyenv draftdraft and you activate it with `pyenv activate draftdraft` from inside draftdraft/server
@@ -30,6 +30,10 @@ Project
 * actually learn markdown
 * autoenv? -- auto move to virtualenv when entering a directory
 * configs - local/debug - will circle back when looking to deploy or do anything outside of debug mode
+
+Jan 16
+* setting up auth
+* move the create_app into a function and set up dedicated blueprints
 
 
 Jan 15
@@ -61,4 +65,7 @@ python3 -m pip install -r requirements.txt
 # set up the tables within the db
 ## ./db_setup.py 
 
+# run the application with
+## `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
+## (note: you could also just hit the python file directly or flask run)
 
