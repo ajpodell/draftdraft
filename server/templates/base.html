@@ -5,23 +5,54 @@
         <!-- <title>{% block title %} {% endblock %} - DraftDraft</title> -->
         <title>DraftDraft</title>
         <!-- probably dont care about this
-        <style>
-            nav a {
-                color: #d64161;
-                font-size: 3em;
-                margin-left: 50px;
-                text-decoration: none;
-            }
-        </style>
-        -->
-        <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}"> -->
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
-        {% block stylesheet %} {% endblock %}
+            <style>
+nav a {
+    color: #d64161;
+    font-size: 3em;
+    margin-left: 50px;
+    text-decoration: none;
+}
+            </style>
+            -->
+            <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}"> -->
+            <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
+            {% block stylesheet %} {% endblock %}
+            <!-- digital ocean stylesheet>
+            -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
+
     </head>
     <body>     
-        <div class="content">
-            The Draft
-            {% block content %} {% endblock %}
-        </div>
+        <section class="hero is-primary is-fullheight">
+            <div class="hero-head">
+                <nav class="navbar">
+                    <div class="container">
+                        <div id="navbarMenuHeroA" class="navbar-menu">
+                            <div class="navbar-end">
+                                <a href="{{ url_for('draft.home') }}" class="navbar-item">
+                                    Home
+                                </a>
+                                <a href="{{ url_for('draft.home') }}" class="navbar-item">
+                                    Profile
+                                </a>
+                                <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                                    Login
+                                </a>
+                                <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                                    Sign Up
+                                </a>
+                                <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <div class="content">
+                    The Draft
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </section>
     </body>
 </html>
