@@ -63,7 +63,7 @@ python3 -m pip install -r requirements.txt
 ## python setup.py develop
 
 # set up the tables within the db
-## ./db_setup.py 
+## ./dev_tools/db_setup.py 
 
 # run the application with
 ## `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`

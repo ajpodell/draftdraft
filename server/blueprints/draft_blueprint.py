@@ -1,7 +1,14 @@
 """ The main blueprint file for now."""
 
-from flask import Blueprint, render_template
-from flask import Flask, redirect, url_for, request
+from flask import (
+    Blueprint,
+    Flask,
+    redirect,
+    render_template,
+    request,
+    url_for,
+)
+from flask_login import current_user, login_required
 
 from models.base import db
 from models.selection import Selection
@@ -33,6 +40,7 @@ def add_selection():
     return {}
 
 @draft.route('/draft')  # would be cool to have a "league" template var
+@login_required
 def view_draft():
     all_picks = db.session.query(Selection).all()
     # make the object returnable. 

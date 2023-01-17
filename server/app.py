@@ -1,7 +1,9 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
 from flask import Flask, redirect, url_for, request, render_template
+from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+
 
 from blueprints import (
     auth_blueprint,
@@ -10,6 +12,7 @@ from blueprints import (
 from models.base import db
 from models.player import Player
 from models.selection import Selection
+from models.user import User
 
 
 def create_app(debug=True):
@@ -38,9 +41,21 @@ def create_app(debug=True):
         # on the local development server.
         # TODO: this should be like an "if debug" type of thing -- 
         app.config['TEMPLATES_AUTO_RELOAD'] = True
+        app.secret_key = 'super_secret_key'
 
+    # configure blueprints
     app.register_blueprint(auth_blueprint.auth)
     app.register_blueprint(draft_blueprint.draft)
+
+    # set up the flask-login things
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        # since the user_id is just the primary key of our user table, use it in the query for the user
+        return User.query.get(int(user_id))
     return app
 
 def run_app():
