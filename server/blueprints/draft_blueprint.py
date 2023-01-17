@@ -3,6 +3,9 @@
 from flask import Blueprint, render_template
 from flask import Flask, redirect, url_for, request
 
+from models.base import db
+from models.selection import Selection
+
 draft = Blueprint('draft', __name__)
 
 def render_home():
