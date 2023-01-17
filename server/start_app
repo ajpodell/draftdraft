@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+gunicorn --reload --reload-extra-file "templates" "app:create_app()"
+

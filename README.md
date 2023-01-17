@@ -67,5 +67,6 @@ python3 -m pip install -r requirements.txt
 
 # run the application with
 ## `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
+## I'm managing this command in a `start_app` script. so can just `./start_app`
 ## (note: you could also just hit the python file directly or flask run)
 
