@@ -16,8 +16,13 @@
     <body class=text-center>     
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <div>
+                <div class=navbar-nav>
                     <a class="navbar-brand" href="{{ url_for('draft.home') }}">DraftDraft</a>
+                    <div>
+                        <a href="{{ url_for('draft.home') }}" class="nav-link">
+                            {{ current_user.username }}
+                        </a>
+                    </div>
                 </div>
                 <div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +32,10 @@
                         <div class="navbar-nav">
                             {% if current_user.is_authenticated %}
                                 <a href="{{ url_for('draft.home') }}" class="nav-link">
-                                    {{ current_user.username }}
+                                    Make Pick
+                                </a>
+                                <a href="{{ url_for('draft.view_draft') }}" class = "nav-link">
+                                    View Draft
                                 </a>
                                 <a class="nav-link"href="{{ url_for('auth.logout') }}" class="navbar-item">
                                     Logout

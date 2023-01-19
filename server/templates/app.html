@@ -1,3 +1,5 @@
+<!-- This is really turning into the page to make picks. -->>
+
 {% extends "base.html" %}
 
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
@@ -15,12 +17,12 @@
     <p>Player name: <input type = "text" name = "player_name" /></p>
     <p><input type = "submit" value = "submit" /></p>
 
-</form>     
+    Available Players
+    {% for player in players %}
+        <div></div>
+    {% endfor %}
 
-<form action = "http://localhost:8000/draft" method="get">
-    <p><input type="submit" value="View Draft" /></p>
+
 </form>     
 
 {% endblock %}
-
-    <!-- Welcome,  current_user.username ! -->
