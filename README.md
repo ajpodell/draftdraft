@@ -1,25 +1,22 @@
 .title Home of the draft draft
 
 
-current thoughts:
-* postgres - maybe try free tier on fly.io
-* backend - flask, deployed to heroku
-* frontend - maybe react native? or webpage? 
-
-
-
-Some things to know about running
-* running with `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
-* port 8000 worked, but 5000 did not (but maybe you just fucked it up)
-* you are using pyenv to manage your virtual environment
-* you named the pyenv draftdraft and you activate it with `pyenv activate draftdraft` from inside draftdraft/server
 
 technologies
-* postgres 15
-* python (i have 3.10)
-* gunicorn - version 20.1.0
-* react? -- not yet
-
+* db:
+** postgres 15
+** managed with flask-sqlalchemy
+** as we need migrations we may want to consider using alembic
+* lang: python (i have 3.10) + flask
+* running the server
+** gunicorn - version 20.1.0
+** other options could be flask run or other servers, but no real need right now
+* front end:
+** flask templates - this is default with flask and is good enough
+** if we get bigger we could consider react? -- not yet
+* styling
+** bootstrap - this is a "UI kit" which give a lot out of the box, less flexibility.
+** alternative - tailwind css. this is more flexible, but not convinced we need more flexibility right now
 
 
 TODO:

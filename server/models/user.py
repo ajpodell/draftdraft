@@ -9,5 +9,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)
 
+    # putting "team name" in here for now. Perhaps in the future will make leagues and teams
+
     def get_id(self):
         return self.user_id

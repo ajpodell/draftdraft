@@ -15,6 +15,24 @@ from models.selection import Selection
 
 draft = Blueprint('draft', __name__)
 
+@draft.before_request
+def check_valid_login():
+    """ Detect if user is logged in as the default - basically equivalent to `@login_required`
+        TODO: force user to set their team name
+    """
+    # ensure user is logged in
+    login_valid = current_user.is_authenticated
+    if (request.endpoint and 
+        'static' not in request.endpoint and 
+        not login_valid and 
+        not getattr(draft.view_functions.get(request.endpoint, {}), 'is_public', False) ) :
+        return render_template('login.html', next=request.endpoint)
+
+def public_endpoint(function):
+    """ decorator to make public -- probably want to functools wraps this """
+    function.is_public = True
+    return function
+
 def render_home():
     """ render the home page.
         Centralizing this in case want to call it in more places and also if move the homepage.
@@ -23,6 +41,7 @@ def render_home():
  
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
+# @login_required
 def home():
     return render_home()
 
@@ -40,7 +59,7 @@ def add_selection():
     return {}
 
 @draft.route('/draft')  # would be cool to have a "league" template var
-@login_required
+# @login_required
 def view_draft():
     all_picks = db.session.query(Selection).all()
     # make the object returnable. 

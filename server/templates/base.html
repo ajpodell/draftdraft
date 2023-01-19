@@ -3,51 +3,53 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <title>{% block title %} {% endblock %} - DraftDraft</title> -->
-        <title>DraftDraft</title>
-        <!-- probably dont care about this
-            <style>
-nav a {
-    color: #d64161;
-    font-size: 3em;
-    margin-left: 50px;
-    text-decoration: none;
-}
-            </style>
-            -->
-            <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}"> -->
-            <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
-            {% block stylesheet %} {% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>  <!-- from the bootstrap docs> -->
 
+        {% block title %} {% endblock %}
+        <title>DraftDraft</title>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+
+
+        {% block stylesheet %} {% endblock %}
     </head>
-    <body>     
-        <section class="hero is-primary is-fullheight">
-            <!-- styling is terrible, but making it work for now -->
-            <nav class="navbar" style="justify_content: space-between; display: flex">
-                <div class="navbar-start">
-                    {% if current_user.is_authenticated %}
-                    <a href="{{ url_for('draft.home') }}" class="navbar-item">
-                        {{ current_user.username }}
-                    </a>
-                    {% endif %}
+    <body class=text-center>     
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <div>
+                    <a class="navbar-brand" href="{{ url_for('draft.home') }}">DraftDraft</a>
                 </div>
-                <div class="navbar-end" style="position: absolute; right: 0">
-                    <a href="{{ url_for('auth.login') }}" class="navbar-item">
-                        Login
-                    </a>
-                    <a href="{{ url_for('auth.logout') }}" class="navbar-item">
-                        Logout
-                    </a>
-                    <a href="{{ url_for('auth.signup') }}" class="navbar-item">
-                        Sign Up
-                    </a>
+                <div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                        <div class="navbar-nav">
+                            {% if current_user.is_authenticated %}
+                                <a href="{{ url_for('draft.home') }}" class="nav-link">
+                                    {{ current_user.username }}
+                                </a>
+                                <a class="nav-link"href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                    Logout
+                                </a>
+                            {% else %}
+                                <a class="nav-link" href="{{ url_for('auth.login') }}" class="navbar-item">
+                                    Login
+                                </a>
+                                <a  class="nav-link" href="{{ url_for('auth.signup') }}" class="navbar-item">
+                                    Sign Up
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
-            </nav>
-            <div class="content">
-                The Draft
-                {% block content %} {% endblock %}
             </div>
-        </section>
+        </nav>
+
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     </body>
 </html>
