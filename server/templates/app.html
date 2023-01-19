@@ -16,13 +16,36 @@
     <p>Your team name: <input type = "text" name = "team_name" /></p>
     <p>Player name: <input type = "text" name = "player_name" /></p>
     <p><input type = "submit" value = "submit" /></p>
-
-    Available Players
-    {% for player in players %}
-        <div></div>
-    {% endfor %}
-
-
 </form>     
+
+Available Players
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ADP</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Team</th>
+            <th scope="col">Position</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in players %}
+            <form action="/selected_row" method="post">
+            <tr>
+                <th scope="row">{{ player.player_id }}</th>
+                <td>{{ player.player_name_first }}</td>
+                <td>{{ player.player_name_last }}</td>
+                <td>{{ player.college_team }}</td>
+                <td>{{ player.position }}</td>
+                <td>
+                        <input type="text" name="player_id" value={{ player.player_id }} readonly=true />
+                        <button type="submit">Draft</button>
+                </td>
+            </tr>
+            </form>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

@@ -11,6 +11,7 @@ from flask import (
 from flask_login import current_user, login_required
 
 from models.base import db
+from models.player import Player
 from models.selection import Selection
 
 draft = Blueprint('draft', __name__)
@@ -33,17 +34,15 @@ def public_endpoint(function):
     function.is_public = True
     return function
 
-def render_home():
-    """ render the home page.
-        Centralizing this in case want to call it in more places and also if move the homepage.
-    """
-    return render_template('app.html')
  
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
-# @login_required
 def home():
-    return render_home()
+    # kind of want to put home in a dedicated "make pick" page - but thats a later problem
+    #TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model 
+    # looking at the draft
+    players = db.session.query(Player).all()
+    return render_template('app.html', players=players)
 
 @draft.route('/players')
 def players():
@@ -52,6 +51,9 @@ def players():
 
 @draft.route('/add_selection', methods=['POST'])
 def add_selection():
+    return {}
+
+    # THIS IS BROKEN SINCE YOU CHANGED TABLES TO USE FOREIGN REFERENCE TO THE PLAYER VALUES NOWQ
     form = request.form
     selection = Selection(player_name=form['player_name'], team_name=form['team_name'])
     db.session.add(selection)
@@ -65,4 +67,25 @@ def view_draft():
     # make the object returnable. 
     # can probably use jsonify or put this in the object
     # selections = [[s.draft_draft_selection, s.team_name, s.player_name] for s in all_picks]
+    # print(all_picks)
+    # import pdb; pdb.set_trace()
     return render_template('draft.html', selections=all_picks)
+
+@draft.route('/selected_row', methods=['POST'])
+def selected_row():
+    """ this can maybe just be the same 'pick' endpoint' if i figure out how this works"""
+    form = request.form
+    selected_player_id = form['player_id']
+    user_id = current_user.user_id
+
+    # TODO: add some sort of protection that its actually the user's turn
+    selection = Selection(player_id=selected_player_id, selecting_team_id=user_id)
+    db.session.add(selection)
+    db.session.commit()
+    return redirect(url_for('draft.view_draft'))
+
+
+# TODO:`reset_draft` - admin only
+# randomize players
+# remove all the selections
+# set selection_seq back to 0

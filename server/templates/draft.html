@@ -6,19 +6,23 @@
 {% endblock %}
 
 {% block content %}
-        <table class='draft_table'>
+        <table class='table'>
             <tr>
                 <th>Pick</th>
                 <th>Team</th>
                 <th>Player</th>
+                <th>College</th>
+                <th>Position</th>
             </tr>
 
             Picks
             {% for selection in selections %}
             <tr style="padding: 10px; background-color: #EEE; margin: 20px">
-                <td>{{ selection.draft_draft_selection }}</td>
-                <td>{{ selection.team_name }}</td>
-                <td>{{ selection.player_name }}</td>
+                <td>{{ selection.draftdraft_selection }}</td>
+                <td>{{ selection.team.username }}</td>
+                <td>{{ selection.player.player_name }}</td>
+                <td>{{ selection.player.college_team }}</td>
+                <td>{{ selection.player.position }}</td>
             </tr>
             {% endfor %}
         </table>
