@@ -1,3 +1,5 @@
+{% import 'components/team_scores.html' as team_scores %}
+
 {% extends "base.html" %}
 
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
@@ -6,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+        <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
         <table class='table'>
             <tr>
                 <th>Pick</th>
@@ -26,4 +29,8 @@
             </tr>
             {% endfor %}
         </table>
-{% endblock %}
+
+        <!-- Team by team view-->
+        {{ team_scores.teamScores(teams) }}
+
+{% endblock %}ll

@@ -13,6 +13,7 @@ from flask_login import current_user, login_required
 from models.base import db
 from models.player import Player
 from models.selection import Selection
+from models.user import User
 
 draft = Blueprint('draft', __name__)
 
@@ -63,13 +64,15 @@ def add_selection():
 @draft.route('/draft')  # would be cool to have a "league" template var
 # @login_required
 def view_draft():
+    # TODO: generally not a fan of passing around sqlalchemy objects --- but it is pretty convenient so :shrug:
     all_picks = db.session.query(Selection).all()
-    # make the object returnable. 
-    # can probably use jsonify or put this in the object
-    # selections = [[s.draft_draft_selection, s.team_name, s.player_name] for s in all_picks]
-    # print(all_picks)
-    # import pdb; pdb.set_trace()
-    return render_template('draft.html', selections=all_picks)
+
+    # get all teams
+    teams = db.session.query(User).all()
+    print(teams[0].selections)
+
+
+    return render_template('draft.html', selections=all_picks, teams=teams)
 
 @draft.route('/selected_row', methods=['POST'])
 def selected_row():

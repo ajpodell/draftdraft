@@ -1,3 +1,7 @@
+""" User class. 
+
+This is doubling as a team for now. Once we have a concept of leagues then a mapping of teams makes more sense.
+"""
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 
@@ -12,11 +16,16 @@ class User(UserMixin, db.Model):
 
     is_admin = db.Column(db.Boolean(), default=False)  # better to have some type of enum but this is easier
 
-    # putting "team name" in here for now. Perhaps in the future will make leagues and teams
-    selection = relationship('Selection', back_populates="team")
-
     def get_id(self):
         return self.user_id
+
+    # Doubling users as "teams" for now. Perhaps in the future will make leagues and teams
+    selections = relationship('Selection', back_populates="team")
+
+    @property
+    def team_score(self):
+        """ get the current score"""
+        return sum(selection.player.nfl_draft_pick or 0 for selection in self.selections)
 
     @property
     def team_name(self):

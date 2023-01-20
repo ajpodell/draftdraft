@@ -12,7 +12,9 @@ class Player(db.Model):
     college_team = db.Column(db.String())
     position = db.Column(db.String())
 
-    selection = relationship('Selection', back_populates="player")
+    selection = relationship('Selection', back_populates="player", uselist=False)
+
+    nfl_draft_pick = db.Column(db.Integer())
 
     @property
     def player_name(self):
