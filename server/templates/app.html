@@ -27,11 +27,12 @@ Available Players
             <th scope="col">Last</th>
             <th scope="col">Team</th>
             <th scope="col">Position</th>
+            <th scope="col"></th>
+            <th scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
         </tr>
     </thead>
     <tbody>
         {% for player in players %}
-            <form action="/selected_row" method="post">
             <tr>
                 <th scope="row">{{ player.player_id }}</th>
                 <td>{{ player.player_name_first }}</td>
@@ -39,11 +40,19 @@ Available Players
                 <td>{{ player.college_team }}</td>
                 <td>{{ player.position }}</td>
                 <td>
-                    <input type="text" name="player_id" value={{ player.player_id }} readonly=true />
-                    <button type="submit">Draft</button>
+                    <form action="/draft_player" method="post">
+                        <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
+                        <button type="submit">Draft</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/score_player" method="post">
+                        <input type="number" name="nfl_draft_pick" value={{ player.nfl_draft_pick }}></input>
+                        <input name="player_id" value={{player.player_id}} class="hidden-value"/>
+                        <button type="submit">Score</button>
+                    </form>
                 </td>
             </tr>
-            </form>
         {% endfor %}
     </tbody>
 </table>

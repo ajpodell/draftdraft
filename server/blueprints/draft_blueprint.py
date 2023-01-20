@@ -69,13 +69,11 @@ def view_draft():
 
     # get all teams
     teams = db.session.query(User).all()
-    print(teams[0].selections)
-
 
     return render_template('draft.html', selections=all_picks, teams=teams)
 
-@draft.route('/selected_row', methods=['POST'])
-def selected_row():
+@draft.route('/draft_player', methods=['POST'])
+def draft_player():
     """ this can maybe just be the same 'pick' endpoint' if i figure out how this works"""
     form = request.form
     selected_player_id = form['player_id']
@@ -87,8 +85,30 @@ def selected_row():
     db.session.commit()
     return redirect(url_for('draft.view_draft'))
 
+@draft.route('/score_players.html')
+def score_players():
+    """ as of yet unused view for a dedicated scoring """
+    return render_template('score_players.html')
 
-# TODO:`reset_draft` - admin only
-# randomize players
-# remove all the selections
-# set selection_seq back to 0
+@draft.route('/score_player', methods=['POST'])
+def score_player():
+    """ score an invidual player """
+    print('make it?')
+    player_id = request.form['player_id']
+    nfl_draft_pick = request.form['nfl_draft_pick']
+    print(request.form)
+    print(player_id)
+    print(nfl_draft_pick)
+
+    try:
+        int(nfl_draft_pick)  # can raise if None (maybe others)
+    except:
+        return redirect(url_for('draft.home'))
+
+    if not int(nfl_draft_pick):
+        # FLASH
+        return redirect(url_for('draft.home'))  # maybe should bring back render_home()
+    print('updating')
+    db.session.query(Player).filter_by(player_id=player_id).update({Player.nfl_draft_pick: nfl_draft_pick})
+    db.session.commit()
+    return redirect(url_for('draft.home'))

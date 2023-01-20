@@ -19,7 +19,7 @@
                     <tr>
                         <td>{{ selection.draftdraft_selection }}</td>
                         <td>{{ selection.player_name }}</td>
-                        <td>{{ selection.nfl_draft_pick or '-' }}</td>
+                        <td>{{ selection.player.nfl_draft_pick or '-' }}</td>
                     </tr>
                     {% endfor %}
                 </table>
