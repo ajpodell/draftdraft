@@ -2,6 +2,7 @@
 # An object of Flask class is our WSGI application.
 from flask import Flask, redirect, url_for, request, render_template
 from flask_login import LoginManager
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
 from blueprints import (
@@ -32,6 +33,9 @@ def create_app():
     # app.config.from_object(os.environ['APP_SETTINGS'])
     # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
+
+    # wire up flask migrations
+    migrate = Migrate(app, db)
 
     if app.config.get('DEBUG'):
         # run() method of Flask class runs the application
