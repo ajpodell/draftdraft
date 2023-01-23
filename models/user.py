@@ -20,8 +20,11 @@ class User(UserMixin, db.Model):
         return self.user_id
 
     # Doubling users as "teams" for now. Perhaps in the future will make leagues and teams
+    from models import selection
     selections = relationship('Selection', back_populates="team")
 
+    # testing why this is throwing an error
+    from models import draft
     pick = relationship('Draft', back_populates="team", uselist=False)
 
     @property
@@ -33,3 +36,7 @@ class User(UserMixin, db.Model):
     def team_name(self):
         """ property for team name in case we want to make a display name or multi team option """
         return self.username
+
+    @property
+    def pick_order(self):
+        return self.pick.pick_order

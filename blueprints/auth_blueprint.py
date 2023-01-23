@@ -12,6 +12,17 @@ auth = Blueprint('auth', __name__)
 def signup():
     return render_template('signup.html')
 
+
+def create_user(username, password):
+    """ utility for creating the user so can make a little utility for adding test data"""
+    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
+    new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
+
+    # add the new user to the database
+    db.session.add(new_user)
+    db.session.commit()
+
+
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     # code to validate and add user to database goes here
@@ -28,12 +39,7 @@ def signup_post():
         flash('must input both username and password')
         return redirect(url_for('auth.signup'))
 
-    # create a new user with the form data. Hash the password so the plaintext version isn't saved.
-    new_user = User(username=username, password=generate_password_hash(password, method='sha256'))
-
-    # add the new user to the database
-    db.session.add(new_user)
-    db.session.commit()
+    create_user(username, password)
 
     return redirect(url_for('auth.login'))
 
