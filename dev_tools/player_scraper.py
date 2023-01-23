@@ -34,7 +34,11 @@ def scrape_player_data():
     return players
 
 
-app = app_file.create_app()
-with app.app_context():
-    db.session.bulk_save_objects(scrape_player_data())
-    db.session.commit()
+def scrape_players():
+    app = app_file.create_app()
+    with app.app_context():
+        db.session.bulk_save_objects(scrape_player_data())
+        db.session.commit()
+
+if __name__ == '__main__':
+    scrape_players()
