@@ -38,5 +38,10 @@ class User(UserMixin, db.Model):
         return self.username
 
     @property
+    def team_id(self):
+        self.user_id
+
+    @property
     def pick_order(self):
         return self.pick.pick_order
+
