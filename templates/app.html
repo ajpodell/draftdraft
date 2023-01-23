@@ -20,6 +20,15 @@
 </form>     
 -->
 
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ errors[0] }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endwith %}
+
 <!-- only show this if admin -->
 {% if current_user.is_admin %}
 <form action = "/reset_draft" method="post">

@@ -4,6 +4,7 @@ import random
 from flask import (
     Blueprint,
     Flask,
+    flash,
     redirect,
     render_template,
     request,
@@ -109,11 +110,11 @@ def draft_player():
         selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
         db.session.add(selection)
         db.session.commit()
-
+        return redirect(url_for('draft.view_draft'))
     else:
-        # TODO: flash(not your turn)  -- we should also gray out the draft button
-        pass
-    return redirect(url_for('draft.view_draft'))
+        flash('Not your pick', 'error')
+        return redirect(url_for('draft.home'))
+
 
 @draft.route('/score_players.html')
 def score_players():
