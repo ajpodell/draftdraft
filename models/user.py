@@ -22,6 +22,8 @@ class User(UserMixin, db.Model):
     # Doubling users as "teams" for now. Perhaps in the future will make leagues and teams
     selections = relationship('Selection', back_populates="team")
 
+    pick = relationship('Draft', back_populates="team", uselist=False)
+
     @property
     def team_score(self):
         """ get the current score"""
