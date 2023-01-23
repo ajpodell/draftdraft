@@ -2,7 +2,6 @@ alembic==1.9.1
 certifi==2022.12.7
 charset-normalizer==3.0.1
 click==8.1.3
--e git+ssh://git@github.com/ajpodell/draftdraft.git@2fd0e6bc5a74d0fa876ea5ed77482f0bd326bf80#egg=draftdraft&subdirectory=server
 Flask==2.2.2
 Flask-Login==0.6.2
 Flask-Migrate==4.0.1
