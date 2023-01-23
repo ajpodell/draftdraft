@@ -20,7 +20,7 @@
                     <a class="navbar-brand" href="{{ url_for('draft.home') }}">DraftDraft</a>
                     <div>
                         <a href="{{ url_for('draft.home') }}" class="nav-link">
-                            {{ current_user.username }}
+                            {{ current_user.username }} {% if current_user.is_admin %}(Admin){% endif %}
                         </a>
                     </div>
                 </div>

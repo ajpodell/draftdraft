@@ -1,4 +1,5 @@
 """ The main blueprint file for now."""
+import random
 
 from flask import (
     Blueprint,
@@ -11,6 +12,7 @@ from flask import (
 from flask_login import current_user, login_required
 
 from models.base import db
+from models.draft import Draft
 from models.player import Player
 from models.selection import Selection
 from models.user import User
@@ -35,15 +37,36 @@ def public_endpoint(function):
     function.is_public = True
     return function
 
+
+def next_up():
+    """ returns team id of the next team up"""
+    last_pick = db.session.query(Selection).order_by(Selection.draftdraft_selection.desc()).first()
+    if last_pick is None:
+        next_pick = 0
+    else:
+        next_pick = last_pick.draftdraft_selection
+
+    all_teams = db.session.query(User).all()
+    total_teams = len(all_teams)
+    next_pick = (next_pick % len(all_teams)) + 1
+
+
+    return next(team for team in all_teams if team.pick.pick_order == next_pick)
+
  
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
 def home():
     # kind of want to put home in a dedicated "make pick" page - but thats a later problem
+    pick_order = db.session.query(Draft).order_by(Draft.pick_order)
+
     #TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model 
     # looking at the draft
     players = db.session.query(Player).all()
-    return render_template('app.html', players=players)
+
+    next_pick = next_up()
+    print(next_pick.team_name)
+    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
 
 @draft.route('/players')
 def players():
@@ -52,6 +75,7 @@ def players():
 
 @draft.route('/add_selection', methods=['POST'])
 def add_selection():
+    """ todo: just delete this?"""
     return {}
 
     # THIS IS BROKEN SINCE YOU CHANGED TABLES TO USE FOREIGN REFERENCE TO THE PLAYER VALUES NOWQ
@@ -80,9 +104,15 @@ def draft_player():
     user_id = current_user.user_id
 
     # TODO: add some sort of protection that its actually the user's turn
-    selection = Selection(player_id=selected_player_id, selecting_team_id=user_id)
-    db.session.add(selection)
-    db.session.commit()
+    next_pick = next_up()
+    if current_user.user_id == next_pick.user_id or current_user.is_admin:
+        selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
+        db.session.add(selection)
+        db.session.commit()
+
+    else:
+        # TODO: flash(not your turn)  -- we should also gray out the draft button
+        pass
     return redirect(url_for('draft.view_draft'))
 
 @draft.route('/score_players.html')
@@ -90,15 +120,32 @@ def score_players():
     """ as of yet unused view for a dedicated scoring """
     return render_template('score_players.html')
 
+@draft.route('/reset_draft', methods=['POST'])
+def reset_draft():
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return
+
+    # delete all selections and the draft order
+    db.session.execute(' TRUNCATE table public.selection; TRUNCATE table public.draft;')
+    db.session.execute('ALTER SEQUENCE selection_seq RESTART WITH 1')
+    db.session.commit()
+
+
+    teams = db.session.query(User).all()
+    random.shuffle(teams)
+    for pick, team in enumerate(teams, start=1):
+        # this didnt work with team_id. maybe need hybridy_property?
+        db.session.add(Draft(team_id=team.user_id, pick_order=pick))
+        db.session.commit()
+
+    return redirect(url_for('draft.home'))
+
+
 @draft.route('/score_player', methods=['POST'])
 def score_player():
     """ score an invidual player """
-    print('make it?')
     player_id = request.form['player_id']
     nfl_draft_pick = request.form['nfl_draft_pick']
-    print(request.form)
-    print(player_id)
-    print(nfl_draft_pick)
 
     try:
         int(nfl_draft_pick)  # can raise if None (maybe others)

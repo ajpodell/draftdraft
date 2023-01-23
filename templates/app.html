@@ -11,12 +11,36 @@
 <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
 
+<!-- This was an early field to manually enter a pick - can probably just delete this
 <form action = "http://localhost:8000/add_selection" method="post" target="dummyframe">
     <p>Enter Pick:</p>
     <p>Your team name: <input type = "text" name = "team_name" /></p>
     <p>Player name: <input type = "text" name = "player_name" /></p>
     <p><input type = "submit" value = "submit" /></p>
 </form>     
+-->
+
+<!-- only show this if admin -->
+{% if current_user.is_admin %}
+<form action = "/reset_draft" method="post">
+    <button type="submit">Reset DraftDraft</button>
+</form>
+{% endif %}
+
+Draft Order
+<h1>Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}0{% endif %}</h1>
+<table class="table">
+    <tr>
+        <th>Pick</th>
+        <th>Team</th>
+    </tr>
+    {% for pick in pick_order %}
+    <tr>
+        <td>{{ pick.pick_order }}</td>
+        <td>{{ pick.team.team_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
 
 Available Players
 <table class="table">
