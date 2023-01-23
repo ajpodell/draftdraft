@@ -37,7 +37,6 @@
     * run `createdb draftdraft` from a psql console
 
 ### Running the app
-* _DO WITHIN THE `server` DIRECTORY_
 * create a virtual environment 
   * _Note: do this however you want, but I'm using pyenv to activate a venv called draftdraft - Aaron_
     * https://towardsdatascience.com/managing-virtual-environment-with-pyenv-ae6f3fb835f8
@@ -89,17 +88,3 @@ Project
 * autoenv? -- auto move to virtualenv when entering a directory
 ** ended up doing this via `pyenv local draftdraft`
 * configs - local/debug - will circle back when looking to deploy or do anything outside of debug mode
-
-Jan 16
-* setting up auth
-* move the create_app into a function and set up dedicated blueprints
-
-
-Jan 15
-* considering moving away from client & server and using flask templates - will be giving this a shot
-* following this: https://www.digitalocean.com/community/tutorials/how-to-use-templates-in-a-flask-application
-
-Jan 12
-- trying to set up a local db -- db_setup.py is functional
-- not using alembic - just flask_sqlalchemy. thats enough for right now.
-

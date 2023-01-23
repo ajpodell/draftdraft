@@ -1,0 +1,34 @@
+
+{% extends "base.html" %}
+
+{% block stylesheet %}
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/score_players.css') }}">
+{% endblock %}
+
+{% block content %}
+        <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
+        <table class='table'>
+            <tr>
+                <th>Pick</th>
+                <th>Team</th>
+                <th>Player</th>
+                <th>College</th>
+                <th>Position</th>
+            </tr>
+
+            Picks
+            {% for selection in selections %}
+            <tr style="padding: 10px; background-color: #EEE; margin: 20px">
+                <td>{{ selection.draftdraft_selection }}</td>
+                <td>{{ selection.team.username }}</td>
+                <td>{{ selection.player.player_name }}</td>
+                <td>{{ selection.player.college_team }}</td>
+                <td>{{ selection.player.position }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Team by team view-->
+        {{ team_scores.teamScores(teams) }}
+
+{% endblock %}ll
