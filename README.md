@@ -40,6 +40,7 @@
 * create a virtual environment 
   * _Note: do this however you want, but I'm using pyenv to activate a venv called draftdraft - Aaron_
     * https://towardsdatascience.com/managing-virtual-environment-with-pyenv-ae6f3fb835f8
+    * configure virtual env to alway turn on while in draftdraft `pyenv local draftdraft`
   * _Note: my IDE made one for me and I don't fully get it - Greg_
 * install the requirements
   * `python3 -m pip install -r requirements.txt`
@@ -54,8 +55,8 @@
   * run `flask db upgrade`
   * _Note: this runs migration files in the migrations directory_
   * Make sure your db is running
-* seed players table with real player data
-  * `python ./dev_tools/player_scraper.py`
+* seed players table with real player data and add some users
+  * `python ./dev_tools/db_setup.py`[--insert-teams] [--insert-players]
 * run the app!
   * `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
   * I'm managing this command in a `start_app` script. so can just `./start_app`
@@ -80,11 +81,8 @@
 
 ------
 TODO:
+see the github issues for the latest tasks
+
 Project
-* set up tables + alembic?
-* login? (later)
 * dockerize the env
-* actually learn markdown
-* autoenv? -- auto move to virtualenv when entering a directory
-** ended up doing this via `pyenv local draftdraft`
-* configs - local/debug - will circle back when looking to deploy or do anything outside of debug mode
+* configs - local/debug - this is started with config.py & .env
