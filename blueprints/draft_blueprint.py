@@ -51,6 +51,10 @@ def next_up():
     total_teams = len(all_teams)
     next_pick = (next_pick % len(all_teams)) + 1
 
+    # if no draft has been set yet then return empty for now.
+    # the below code assumes if any team has a pick all teams have a piack
+    if not all_teams or not all_teams[0].pick:
+        return None
 
     return next(team for team in all_teams if team.pick.pick_order == next_pick)
 
@@ -66,7 +70,6 @@ def home():
     players = db.session.query(Player).all()
 
     next_pick = next_up()
-    print(next_pick.team_name)
     return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
 
 @draft.route('/players')
@@ -106,6 +109,10 @@ def draft_player():
 
     # TODO: add some sort of protection that its actually the user's turn
     next_pick = next_up()
+    if next_pick is None:
+        flash('Draft order not yet set', 'error')
+        return redirect(url_for('draft.home'))
+
     if current_user.user_id == next_pick.user_id or current_user.is_admin:
         selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
         db.session.add(selection)
