@@ -67,7 +67,7 @@ def home():
 
     #TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model 
     # looking at the draft
-    players = db.session.query(Player).all()
+    players = db.session.query(Player).order_by(Player.player_id).all()
 
     next_pick = next_up()
     return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
