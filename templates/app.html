@@ -5,6 +5,9 @@
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
 {% block stylesheet %}
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/app.css') }}">
+    <!-- add filtering stylesheet -->
+    <link href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css" rel="stylesheet">
+
 {% endblock %}
 
 {% block content %}
@@ -53,16 +56,22 @@ Draft Order
 </table>
 
 Available Players
-<table class="table">
+<table class="table"
+    id="player_table"
+    data-filter-control="true"
+    data-show-search-clear-button="false"
+    data-show-columns="true"
+    data-show-multi-sort="true"
+>
     <thead>
         <tr>
-            <th scope="col">ADP</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Team</th>
-            <th scope="col">Position</th>
-            <th scope="col"></th>
-            <th scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
+            <th data-field="adp" scope="col">ADP</th>
+            <th data-field="first" data-filter-control="input" data-sortable="true" scope="col">First</th>
+            <th data-field="last" data-filter-control="input" data-sortable="true" scope="col">Last</th>
+            <th data-field="team" data-filter-control="input" data-sortable="true" scope="col">Team</th>
+            <th data-field="position" data-filter-control="select" data-sortable="true" scope="col">Position</th>
+            <th data-field="draft_btn" scope="col"></th>
+            <th data-field="nfl_pick" scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
         </tr>
     </thead>
     <tbody>
@@ -91,4 +100,9 @@ Available Players
     </tbody>
 </table>
 
+<script>
+  $(function() {
+    $('#player_table').bootstrapTable()
+  })
+</script>
 {% endblock %}
