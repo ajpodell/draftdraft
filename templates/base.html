@@ -7,11 +7,25 @@
 
         {% block title %} {% endblock %}
         <title>DraftDraft</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}">
+        <!-- <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/base.css') }}"> -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 
 
         {% block stylesheet %} {% endblock %}
+
+        <!-- this is jquery. tbd if its needed -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        <!-- script for filtering table. throws in console but lets see if it works -->
+        <!--
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.21.2/extensions/filter-control/bootstrap-table-filter-control.min.js" integrity="sha512-xZT1mq1eo6y/dWBJ/J7Lreo31t5xVHxDxFBvMh1tPMbbrC/NK88ZFxR9BeKC+7vXbF4SzTFiAUXShahtEyuwtQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        -->
+        <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+        <script src="https://unpkg.com/bootstrap-table@1.21.2/dist/extensions/multiple-sort/bootstrap-table-multiple-sort.js"></script>
+
+
     </head>
     <body class=text-center>     
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -58,6 +72,5 @@
             {% block content %} {% endblock %}
         </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     </body>
 </html>
