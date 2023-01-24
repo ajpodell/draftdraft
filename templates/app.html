@@ -44,7 +44,8 @@ Draft Order
         <th>Team</th>
     </tr>
     {% for pick in pick_order %}
-    <tr>
+
+    <tr class={{ "table-primary" if pick.pick_order == next_pick.pick_order}}>
         <td>{{ pick.pick_order }}</td>
         <td>{{ pick.team.team_name }}</td>
     </tr>
