@@ -24,7 +24,7 @@ class DraftSetup:
         click.echo('inserting teams')
 
         teams = [
-            'aaron', 'Shayna', 'Dan', 'greg', 'Jason', 'Zack', 'Riv',
+            'aaron', 'Shayna', 'Dan', 'greg', 'Jason', 'Zack', 'Riv', 'Sam'
         ]
         app = app_file.create_app()
         with app.app_context():
