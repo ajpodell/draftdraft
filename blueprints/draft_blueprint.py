@@ -11,6 +11,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
+from sqlalchemy import desc, nulls_last
 
 from models.base import db
 from models.draft import Draft
@@ -20,6 +21,7 @@ from models.user import User
 
 draft = Blueprint('draft', __name__)
 
+
 @draft.before_request
 def check_valid_login():
     """ Detect if user is logged in as the default - basically equivalent to `@login_required`
@@ -27,17 +29,32 @@ def check_valid_login():
     """
     # ensure user is logged in
     login_valid = current_user.is_authenticated
-    if (request.endpoint and 
-        'static' not in request.endpoint and 
-        not login_valid and 
-        not getattr(draft.view_functions.get(request.endpoint, {}), 'is_public', False) ) :
+    if (request.endpoint and
+            'static' not in request.endpoint and
+            not login_valid and
+            not getattr(draft.view_functions.get(request.endpoint, {}), 'is_public', False)):
         return render_template('login.html', next=request.endpoint)
+
 
 def public_endpoint(function):
     """ decorator to make public -- probably want to functools wraps this """
     function.is_public = True
     return function
 
+
+def calculate_best_picks():
+    rows = db.session.query(Player.player_name_first,
+                           Player.player_name_last,
+                           User.username,
+                           (Player.nfl_draft_pick - Selection.draftdraft_selection))\
+                    .join(Selection,
+                          Selection.player_id == Player.player_id)\
+                    .join(User,
+                          Selection.selecting_team_id == User.user_id)\
+                    .order_by(nulls_last(desc(Player.nfl_draft_pick - Selection.draftdraft_selection)))\
+                    .all()
+
+    return [rows._mapping for row in rows]
 
 def next_up():
     """ returns team id of the next team up"""
@@ -58,7 +75,7 @@ def next_up():
 
     return next(team for team in all_teams if team.pick.pick_order == next_pick)
 
- 
+
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
 def home():
@@ -66,18 +83,20 @@ def home():
     # kind of want to put home in a dedicated "make pick" page - but thats a later problem
     pick_order = db.session.query(Draft).order_by(Draft.pick_order)
 
-    #TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model 
+    # TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model
     # looking at the draft
     players = db.session.query(Player).order_by(Player.player_id).all()
 
     next_pick = next_up()
 
-    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
+    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick,
+                           best_picks=differentials)
 
 @draft.route('/players')
 def players():
     players = db.session.query(Player).all()
     return list(player.__repr__() for player in players)
+
 
 @draft.route('/players', methods=['POST'])
 def add_player():
@@ -92,6 +111,7 @@ def add_player():
 
     return redirect(url_for('draft.home'))
 
+
 @draft.route('/add_selection', methods=['POST'])
 def add_selection():
     """ todo: just delete this?"""
@@ -104,6 +124,7 @@ def add_selection():
     db.session.commit()
     return {}
 
+
 @draft.route('/draft')  # would be cool to have a "league" template var
 # @login_required
 def view_draft():
@@ -114,6 +135,7 @@ def view_draft():
     teams = db.session.query(User).all()
 
     return render_template('draft.html', selections=all_picks, teams=teams)
+
 
 @draft.route('/draft_player', methods=['POST'])
 def draft_player():
@@ -138,7 +160,8 @@ def draft_player():
         flash('Not your pick', 'error')
         return redirect(url_for('draft.home'))
 
-    selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
+    selection = Selection(player_id=selected_player_id,
+                              selecting_team_id=next_pick.user_id)  # wasnt working with team_id
     db.session.add(selection)
     db.session.commit()
     return redirect(url_for('draft.view_draft'))
@@ -149,6 +172,7 @@ def score_players():
     """ as of yet unused view for a dedicated scoring """
     return render_template('score_players.html')
 
+
 @draft.route('/reset_draft', methods=['POST'])
 def reset_draft():
     if not current_user.is_authenticated or not current_user.is_admin:
@@ -158,7 +182,6 @@ def reset_draft():
     db.session.execute(' TRUNCATE table public.selection; TRUNCATE table public.draft;')
     db.session.execute('ALTER SEQUENCE selection_seq RESTART WITH 1')
     db.session.commit()
-
 
     teams = db.session.query(User).all()
     random.shuffle(teams)
@@ -188,6 +211,7 @@ def score_player():
     db.session.query(Player).filter_by(player_id=player_id).update({Player.nfl_draft_pick: nfl_draft_pick})
     db.session.commit()
     return redirect(url_for('draft.home'))
+
 
 @draft.route('/admin_tools')
 def admin_tools():
