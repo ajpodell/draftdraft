@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="card" style="width: 18rem;">
+        <div class="card-header">
+            <h4>Add to player pool</h4>
+        </div>
+        <div class="card-body">
+            <form action="/players" method="post" target="dummyframe">
+                <p>First Name: <br> <input type="text" name="player_name_first"/></p>
+                <p>Last Name: <br> <input type="text" name="player_name_last"/></p>
+                <p>College Team: <br> <input type="text" name="college_team"/></p>
+                <p>Position: <br> <input type="text" name="position"/></p>
+                <p><input type="submit" value="submit"/></p>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
