@@ -1,4 +1,5 @@
 .hidden-value{
     visibility: hidden;
+    display:none;
     width: 0px;
 }

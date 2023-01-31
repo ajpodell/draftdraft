@@ -71,6 +71,7 @@ def home():
     players = db.session.query(Player).order_by(Player.player_id).all()
 
     next_pick = next_up()
+
     return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
 
 @draft.route('/players')
@@ -133,14 +134,14 @@ def draft_player():
         flash('Player already selected', 'error')
         return redirect(url_for('draft.home'))
 
-    if current_user.user_id == next_pick.user_id or current_user.is_admin:
-        selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
-        db.session.add(selection)
-        db.session.commit()
-        return redirect(url_for('draft.view_draft'))
-    else:
+    if not current_user.user_id == next_pick.user_id and not current_user.is_admin:
         flash('Not your pick', 'error')
         return redirect(url_for('draft.home'))
+
+    selection = Selection(player_id=selected_player_id, selecting_team_id=next_pick.user_id)  # wasnt working with team_id
+    db.session.add(selection)
+    db.session.commit()
+    return redirect(url_for('draft.view_draft'))
 
 
 @draft.route('/score_players.html')
