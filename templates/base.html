@@ -33,6 +33,10 @@
                         <a href="{{ url_for('draft.admin_tools') }}" class="nav-link">
                             Admin Tools
                         </a>
+                    {% else %}
+                        <a href="{{ url_for('draft.home') }}" class="nav-link">
+                            {{ current_user.username }}
+                        </a>
                     {% endif %}
                 </div>
                 <div>
