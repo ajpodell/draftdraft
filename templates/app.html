@@ -29,7 +29,6 @@
 </form>
 {% endif %}
 
-Draft Order
 <h1>Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}Draft order not set{% endif %}</h1>
 <table class="table">
     <tr>
@@ -75,7 +74,7 @@ Available Players
                 <td>
                     <form action="/draft_player" method="post">
                         <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                        <button type="submit">Draft</button>
+                        <button type="submit" {% if player.is_selected %}disabled{% endif %}>Draft</button>
                     </form>
                 </td>
                 <td>
