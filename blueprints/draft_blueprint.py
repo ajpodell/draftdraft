@@ -62,6 +62,7 @@ def next_up():
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
 def home():
+    """ This is the main page of the app. As of now it shows the draft order and board."""
     # kind of want to put home in a dedicated "make pick" page - but thats a later problem
     pick_order = db.session.query(Draft).order_by(Draft.pick_order)
 
@@ -124,6 +125,12 @@ def draft_player():
     next_pick = next_up()
     if next_pick is None:
         flash('Draft order not yet set', 'error')
+        return redirect(url_for('draft.home'))
+
+    # picked = db.session
+    picked = Selection.query.filter_by(player_id=selected_player_id).one_or_none()
+    if(picked):
+        flash('Player already selected', 'error')
         return redirect(url_for('draft.home'))
 
     if current_user.user_id == next_pick.user_id or current_user.is_admin:

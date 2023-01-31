@@ -19,5 +19,10 @@ class Player(db.Model):
     def player_name(self):
         return f'{self.player_name_first} {self.player_name_last}'
 
+    # @hybrid_property
+    @property
+    def is_selected(self):
+        return bool(self.selection)
+
     def __repr__(self):
         return f'Player({self.player_name_first} {self.player_name_last}, {self.college_team} ({self.position}))'
