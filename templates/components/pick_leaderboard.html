@@ -16,7 +16,7 @@
                     </thead>
                     <tbody>
 
-                    {% for index, query_result in selections %}
+                    {% for index, query_result in enumerate(selections) %}
                         <tr class={{ "table-primary" if index == 0 }}>
                             <th scope="row">{{ index + 1 }}</th>
                             <td>{{ query_result[0] + ' ' + query_result[1] }}</td>
