@@ -1,5 +1,6 @@
 <!-- So this is really the `view_draft` page. should get around to renaming this -->
 {% import 'components/team_scores.html' as team_scores %}
+{% import 'components/draft_results.html' as draft_results %}
 
 {% extends "base.html" %}
 
@@ -9,27 +10,9 @@
 {% endblock %}
 
 {% block content %}
-        <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
-        <table class='table'>
-            <tr>
-                <th>Pick</th>
-                <th>Team</th>
-                <th>Player</th>
-                <th>College</th>
-                <th>Position</th>
-            </tr>
 
-            Picks
-            {% for selection in selections %}
-            <tr style="padding: 10px; background-color: #EEE; margin: 20px">
-                <td>{{ selection.draftdraft_selection }}</td>
-                <td>{{ selection.team.username }}</td>
-                <td>{{ selection.player.player_name }}</td>
-                <td>{{ selection.player.college_team }}</td>
-                <td>{{ selection.player.position }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+        <!-- Draft Results-->
+        {{ draft_results.draftResults(selections)}}
 
         <!-- Team by team view-->
         {{ team_scores.teamScores(teams) }}
