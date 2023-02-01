@@ -49,13 +49,13 @@ def generate_leaderboard(leaderboard_type):
     rows = db.session.query(Player.player_name_first,
                             Player.player_name_last,
                             User.username,
-                            (Selection.draftdraft_selection - Player.nfl_draft_pick).label(differential_column_label)) \
+                            (Selection.draftdraft_selection - Player.nfl_draft_pick).label(differential_column_label))
         .join(Selection,
-              Selection.player_id == Player.player_id) \
+              Selection.player_id == Player.player_id)
         .join(User,
-              Selection.selecting_team_id == User.user_id) \
-        .order_by(nulls_last(sort_dir)) \
-        .limit(3) \
+              Selection.selecting_team_id == User.user_id)
+        .order_by(nulls_last(sort_dir))
+        .limit(3)
         .all()
 
     return rows
