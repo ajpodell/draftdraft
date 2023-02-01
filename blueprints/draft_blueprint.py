@@ -140,7 +140,7 @@ def view_draft():
     return render_template('draft.html',
                            selections=all_picks,
                            teams=teams,
-                           best_selections=enumerate(generate_leaderboard('best')),
+                           best_selections=generate_leaderboard('best'),
                            worst_selections=enumerate(generate_leaderboard('worst')))
 
 
