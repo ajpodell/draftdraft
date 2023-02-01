@@ -1,12 +1,13 @@
 <!-- So this is really the `view_draft` page. should get around to renaming this -->
 {% import 'components/team_scores.html' as team_scores %}
+{% import 'components/pick_leaderboard.html' as leaderboard %}
 {% import 'components/draft_results.html' as draft_results %}
 
 {% extends "base.html" %}
 
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
 {% block stylesheet %}
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/draft.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -14,7 +15,18 @@
         <!-- Draft Results-->
         {{ draft_results.draftResults(selections) }}
 
-        <!-- Team by team view-->
-        {{ team_scores.teamScores(teams) }}
+    <!-- Team by team view-->
+    {{ team_scores.teamScores(teams) }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                {{ leaderboard.leaderBoard(best_selections, 'Best') }}
+            </div>
+            <div class="col-lg-6 mb-4">
+                {{ leaderboard.leaderBoard(worst_selections, 'Worst') }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}ll

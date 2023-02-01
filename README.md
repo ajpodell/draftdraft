@@ -57,6 +57,7 @@
   * Make sure your db is running
 * seed players table with real player data and add some users
   * `python ./dev_tools/db_setup.py`[--insert-teams] [--insert-players]
+    * for now dont include the flags as theyre both enabled by default and i dont feel like updating
 * run the app!
   * `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
   * I'm managing this command in a `start_app` script. so can just `./start_app`
@@ -86,3 +87,7 @@ see the github issues for the latest tasks
 Project
 * dockerize the env
 * configs - local/debug - this is started with config.py & .env
+
+Random Issues + Workarounds
+* ``` ModuleNotFoundError: No module named 'app'``` when running python scripts
+  *  ```export PYTHONPATH=$PATHONPATH:`pwd` ``` was the fix for me. you need to set your PYTHONPATH
