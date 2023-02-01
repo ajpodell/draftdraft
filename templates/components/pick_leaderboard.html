@@ -1,0 +1,32 @@
+{% macro leaderBoard(selections, title) -%}
+    <div class='container-fluid' style="display: flex">
+        <div class="card">
+            <div class="card-header">
+                {{ title + ' Pick Leaderboard' }}
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Team</th>
+                        <th scope="col">Player Name</th>
+                        <th scope="col">Differential</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for index, query_result in selections %}
+                        <tr class={{ "table-primary" if index == 0 }}>
+                            <th scope="row">{{ index + 1 }}</th>
+                            <td>{{ query_result[0] + ' ' + query_result[1] }}</td>
+                            <td>{{ query_result[2] }}</td>
+                            <td>{{ query_result[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{%- endmacro %}

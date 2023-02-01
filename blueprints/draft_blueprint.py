@@ -11,7 +11,7 @@ from flask import (
     url_for,
 )
 from flask_login import current_user, login_required
-from sqlalchemy import desc, nulls_last
+from sqlalchemy import desc, asc, nulls_last
 
 from models.base import db
 from models.draft import Draft
@@ -42,19 +42,23 @@ def public_endpoint(function):
     return function
 
 
-def calculate_best_picks():
-    rows = db.session.query(Player.player_name_first,
-                           Player.player_name_last,
-                           User.username,
-                           (Player.nfl_draft_pick - Selection.draftdraft_selection))\
-                    .join(Selection,
-                          Selection.player_id == Player.player_id)\
-                    .join(User,
-                          Selection.selecting_team_id == User.user_id)\
-                    .order_by(nulls_last(desc(Player.nfl_draft_pick - Selection.draftdraft_selection)))\
-                    .all()
+def generate_leaderboard(leaderboard_type):
+    differential_column_label = 'pick_differential'
+    sort_dir = asc(differential_column_label) if leaderboard_type == "worst" else desc(differential_column_label)
 
-    return [rows._mapping for row in rows]
+    rows = db.session.query(Player.player_name_first,
+                            Player.player_name_last,
+                            User.username,
+                            (Selection.draftdraft_selection - Player.nfl_draft_pick).label(differential_column_label)) \
+        .join(Selection,
+              Selection.player_id == Player.player_id) \
+        .join(User,
+              Selection.selecting_team_id == User.user_id) \
+        .order_by(nulls_last(sort_dir)) \
+        .limit(3) \
+        .all()
+
+    return rows
 
 def next_up():
     """ returns team id of the next team up"""
@@ -89,8 +93,7 @@ def home():
 
     next_pick = next_up()
 
-    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick,
-                           best_picks=differentials)
+    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
 
 @draft.route('/players')
 def players():
@@ -134,7 +137,11 @@ def view_draft():
     # get all teams
     teams = db.session.query(User).all()
 
-    return render_template('draft.html', selections=all_picks, teams=teams)
+    return render_template('draft.html',
+                           selections=all_picks,
+                           teams=teams,
+                           best_selections=enumerate(generate_leaderboard('best')),
+                           worst_selections=enumerate(generate_leaderboard('worst')))
 
 
 @draft.route('/draft_player', methods=['POST'])
