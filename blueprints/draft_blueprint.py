@@ -141,7 +141,7 @@ def view_draft():
                            selections=all_picks,
                            teams=teams,
                            best_selections=generate_leaderboard('best'),
-                           worst_selections=enumerate(generate_leaderboard('worst')))
+                           worst_selections=generate_leaderboard('worst'))
 
 
 @draft.route('/draft_player', methods=['POST'])
