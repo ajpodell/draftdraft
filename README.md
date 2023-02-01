@@ -57,6 +57,7 @@
   * Make sure your db is running
 * seed players table with real player data and add some users
   * `python ./dev_tools/db_setup.py`[--insert-teams] [--insert-players]
+    * for now dont include the flags as theyre both enabled by default and i dont feel like updating
 * run the app!
   * `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
   * I'm managing this command in a `start_app` script. so can just `./start_app`
