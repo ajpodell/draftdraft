@@ -1,0 +1,15 @@
+version: '3'
+services:
+
+  postgres:
+    image: "postgres:latest"
+    platform: linux/x86_64
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: ""
+      POSTGRES_HOST_AUTH_METHOD: "trust" #todo do I still need this? try to remove
+      POSTGRES_DB: "draftdraft"
+      TZ: 'UTC'
+      PGTZ: 'UTC'
