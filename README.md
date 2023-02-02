@@ -1,24 +1,66 @@
-.title Home of the draft draft
+# Home of the one and only draftDraft
+
+## Technologies
+* Language
+  * python
+  * flask framework
+  
+* DB
+  * postgres 15
+  * ORM: flask-sqlalchemy
+  * _Note: consider alembic when we need migrations_
+
+* Server
+  * gunicorn - version 20.1.0
+  * _Note: other options could be flask run or other servers, but no real need right now_
+
+* Frontend
+  * flask templates
+  * _Note: this is default with flask and is good enough_
+  * _Note: could consider react or something in the future
 
 
+## Getting Started
+### Pre reqs
+* download python 3.10 to your machine
+* download pip (package manager)
+  * _Note: honestly not sure how I downloaded this. lots of ways though_
+* download postgresql 15
+  * desktop version, through homebrew, or docker all work
+  * if docker, download docker desktop (https://www.docker.com/products/docker-desktop/)
+    * run `docker compose up` to run postgres
+    * run `docker compose down` to stop it
+    * _Note: see `docker-compose.yaml` file for how that works_
+  * if homebrew,
+    * run `brew install postgresql@15`
+    * run the brew start postgres command, or something like that
+    * run `createdb draftdraft` from a psql console
 
-technologies
-* db:
-** postgres 15
-** managed with flask-sqlalchemy
-** as we need migrations we may want to consider using alembic
-* lang: python (i have 3.10) + flask
-* running the server
-** gunicorn - version 20.1.0
-** other options could be flask run or other servers, but no real need right now
-* front end:
-** flask templates - this is default with flask and is good enough
-** if we get bigger we could consider react? -- not yet
-* styling
-** bootstrap - this is a "UI kit" which give a lot out of the box, less flexibility.
-** alternative - tailwind css. this is more flexible, but not convinced we need more flexibility right now
+### Running the app
+* _DO WITHIN THE `server` DIRECTORY_
+* create a virtual environment 
+  * _Note: do this however you want, but I'm using pyenv to activate a venv called draftdraft - Aaron_
+    * https://towardsdatascience.com/managing-virtual-environment-with-pyenv-ae6f3fb835f8
+  * _Note: my IDE made one for me and I don't fully get it - Greg_
+* install the requirements
+  * `python3 -m pip install -r requirements.txt`
+* put the project in your path
+  * `python setup.py develop`
+  * _Note: I dont fully understand this part - Aaron_
+  * _Note: I skipped this for now - Greg_
+* set up the tables within the db
+  * `python ./dev_tools/db_setup.py`
+  * Make sure your db is running
+* seed players table with real player data
+  * `python ./dev_tools/player_scraper.py`
+* run the app!
+  * `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
+  * I'm managing this command in a `start_app` script. so can just `./start_app`
+  * _Note: you could also just hit the python file directly or flask run_
+  * _Note: if in an IDE, it'll probably know how to run the app and you can click a button_
+ 
 
-
+------
 TODO:
 Project
 * set up tables + alembic?
@@ -41,30 +83,4 @@ Jan 15
 Jan 12
 - trying to set up a local db -- db_setup.py is functional
 - not using alembic - just flask_sqlalchemy. thats enough for right now.
-
-
-.h3 Getting Going
-# all of this is assumed to be done from within the `server` directory
-
-# create a virtual environment
-* do this however you want, but I'm using pyenv to activate a venv called draftdraft
-* https://towardsdatascience.com/managing-virtual-environment-with-pyenv-ae6f3fb835f8
-
-# install the requirements
-python3 -m pip install -r requirements.txt
-
-# install postgres
-## brew install postgresql@15
-## createdb draftdraft
-
-# put the project in your path. (I dont fully understand this part)
-## python setup.py develop
-
-# set up the tables within the db
-## ./dev_tools/db_setup.py 
-
-# run the application with
-## `gunicorn --reload --reload_extra_file "templates" "app.create_app()"`
-## I'm managing this command in a `start_app` script. so can just `./start_app`
-## (note: you could also just hit the python file directly or flask run)
 
