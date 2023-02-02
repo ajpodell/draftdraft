@@ -77,6 +77,19 @@ def players():
     players = db.session.query(Player).all()
     return list(player.__repr__() for player in players)
 
+@draft.route('/players', methods=['POST'])
+def add_player():
+    form = request.form
+    player = Player(player_name_first=form['player_name_first'],
+                    player_name_last=form['player_name_last'],
+                    college_team=form['college_team'],
+                    position=form['position'])
+
+    db.session.add(player)
+    db.session.commit()
+
+    return redirect(url_for('draft.home'))
+
 @draft.route('/add_selection', methods=['POST'])
 def add_selection():
     """ todo: just delete this?"""
@@ -167,3 +180,7 @@ def score_player():
     db.session.query(Player).filter_by(player_id=player_id).update({Player.nfl_draft_pick: nfl_draft_pick})
     db.session.commit()
     return redirect(url_for('draft.home'))
+
+@draft.route('/admin_tools')
+def admin_tools():
+    return render_template('admin_tools.html')

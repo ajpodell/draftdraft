@@ -26,11 +26,14 @@
             <div class="container-fluid">
                 <div class=navbar-nav>
                     <a class="navbar-brand" href="{{ url_for('draft.home') }}">DraftDraft</a>
-                    <div>
+                    {% if current_user.is_admin %}
                         <a href="{{ url_for('draft.home') }}" class="nav-link">
-                            {{ current_user.username }} {% if current_user.is_admin %}(Admin){% endif %}
+                            {{ current_user.username }} (Admin)
                         </a>
-                    </div>
+                        <a href="{{ url_for('draft.admin_tools') }}" class="nav-link">
+                            Admin Tools
+                        </a>
+                    {% endif %}
                 </div>
                 <div>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
