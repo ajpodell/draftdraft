@@ -87,3 +87,7 @@ see the github issues for the latest tasks
 Project
 * dockerize the env
 * configs - local/debug - this is started with config.py & .env
+
+Random Issues + Workarounds
+* ``` ModuleNotFoundError: No module named 'app'``` when running python scripts
+  *  ```export PYTHONPATH=$PATHONPATH:`pwd` ``` was the fix for me. you need to set your PYTHONPATH

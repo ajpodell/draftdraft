@@ -1,26 +1,27 @@
 <!-- So this is really the `view_draft` page. should get around to renaming this -->
 {% import 'components/team_scores.html' as team_scores %}
+{% import 'components/pick_leaderboard.html' as leaderboard %}
 
 {% extends "base.html" %}
 
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
 {% block stylesheet %}
-    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/draft.css') }}">
 {% endblock %}
 
 {% block content %}
-        <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
-        <table class='table'>
-            <tr>
-                <th>Pick</th>
-                <th>Team</th>
-                <th>Player</th>
-                <th>College</th>
-                <th>Position</th>
-            </tr>
+    <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
+    <table class='table'>
+        <tr>
+            <th>Pick</th>
+            <th>Team</th>
+            <th>Player</th>
+            <th>College</th>
+            <th>Position</th>
+        </tr>
 
-            Picks
-            {% for selection in selections %}
+        Picks
+        {% for selection in selections %}
             <tr style="padding: 10px; background-color: #EEE; margin: 20px">
                 <td>{{ selection.draftdraft_selection }}</td>
                 <td>{{ selection.team.username }}</td>
@@ -28,10 +29,21 @@
                 <td>{{ selection.player.college_team }}</td>
                 <td>{{ selection.player.position }}</td>
             </tr>
-            {% endfor %}
-        </table>
+        {% endfor %}
+    </table>
 
-        <!-- Team by team view-->
-        {{ team_scores.teamScores(teams) }}
+    <!-- Team by team view-->
+    {{ team_scores.teamScores(teams) }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                {{ leaderboard.leaderBoard(best_selections, 'Best') }}
+            </div>
+            <div class="col-lg-6 mb-4">
+                {{ leaderboard.leaderBoard(worst_selections, 'Worst') }}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}ll
