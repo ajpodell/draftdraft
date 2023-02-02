@@ -5,11 +5,9 @@ Revises:
 Create Date: 2023-01-22 01:46:15.488733
 
 """
-from typing import Sequence
-
 from alembic import op
 import sqlalchemy as sa
-from sqlalchemy.schema import Sequence, CreateSequence
+from sqlalchemy.schema import Sequence, CreateSequence, DropSequence
 
 # revision identifiers, used by Alembic.
 revision = '5f48bbb13b41'
@@ -58,3 +56,6 @@ def downgrade():
     op.drop_table('user')
     op.drop_table('player')
     # ### end Alembic commands ###
+
+    # Need to drop sequences manually
+    op.execute(DropSequence(Sequence('selection_seq')))
