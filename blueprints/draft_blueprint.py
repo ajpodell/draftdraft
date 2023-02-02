@@ -95,7 +95,7 @@ def home():
 
     next_pick = next_up()
 
-    return render_template('app.html', players=players, pick_order=pick_order, next_pick=next_pick)
+    return render_template('draft_page.html', players=players, pick_order=pick_order, next_pick=next_pick)
 
 @draft.route('/players')
 def players():

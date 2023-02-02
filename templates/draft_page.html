@@ -1,0 +1,81 @@
+<!-- This is really turning into the page to make picks. -->
+{% import 'components/draft_board.html' as draftBoard %}
+
+{% extends "base.html" %}
+
+<!-- wonder if theres a better way to get stylesheets in. there must be. -->
+{% block stylesheet %}
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft_page.css') }}">
+    <!-- add filtering stylesheet -->
+    <link href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css" rel="stylesheet">
+
+{% endblock %}
+
+{% block content %}
+<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{ errors[0] }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% endwith %}
+
+<!-- only show this if admin -->
+{% if current_user.is_admin %}
+<form action = "/reset_draft" method="post">
+    <button type="submit">Reset DraftDraft</button>
+</form>
+{% endif %}
+
+<!-- display None here then show in script. Search bar loading slowly so this maybe looks nicer? -->
+<div id="draftPage" style="display: None"> 
+    <div id="draftOrder">
+        <h1>Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}Draft order not set{% endif %}</h1>
+        <table class="table table-bordered border-3">
+            <tr>
+                <th>Pick</th>
+                <th>Team</th>
+            </tr>
+            {% for pick in pick_order %}
+
+            <tr class={{ "table-primary" if pick.pick_order == next_pick.pick_order}}>
+                <td>{{ pick.pick_order }}</td>
+                <td>{{ pick.team.team_name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    {{ draftBoard.draftBoard(players) }}
+</div>
+
+<script>
+    $(document).ready(function(){
+        // This is silly but it only works if this first call is present
+        // Its pretty slow though, there must be a better way to do this
+        $('#player_table').bootstrapTable();
+        $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
+
+        $( '#draftPage').fadeIn('fast')
+
+    })
+</script>
+
+<script>
+    // todo: rename this something better
+    function toggleShowSelected() {
+        if ($('#showSelectedCheckbox').is(':checked') ){
+            $('#player_table').bootstrapTable('filterBy', {});
+        }
+        else {
+            $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
+        }
+        return true;
+    }
+
+</script>
+
+{% endblock %}

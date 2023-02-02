@@ -1,0 +1,63 @@
+{% macro draftBoard(players) -%}
+
+<div id="draftBoard" class="white_border">
+    Available Players
+    <div id="filteringContainer" class="white_border" style="display: flex;">
+        <label>
+            <input id="showSelectedCheckbox" type="checkbox" onclick="return toggleShowSelected();">
+            Show drafted players
+        </label>
+    </div>
+
+    <table class="table table-bordered border-3"
+        id="player_table"
+        data-filter-control="false"
+        data-show-search-clear-button="false"
+        data-show-columns="false"
+        data-show-multi-sort="false"
+        data-pagination="true"
+        data-page-size="25"
+        data-search="true"
+        data-toolbar="#filteringContainer"
+    >
+        <thead>
+            <tr>
+                <th data-field="adp" data-sortable="false" scope="col">ADP</th>
+                <th data-field="first" data-filter-control="input" data-sortable="false" scope="col">First</th>
+                <th data-field="last" data-filter-control="input" data-sortable="false" scope="col">Last</th>
+                <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
+                <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
+                <th data-field="draft_btn" data-filter-control="" data-show-filter-control-switch="true" data-filter-control-visible="true" data-filter-custom-search="gjo" scope="col"></th>
+                <th data-field="is_drafted" class="hidden-value" colspan=0></th>
+                <th data-field="nfl_pick" scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
+            </tr>
+        </thead>
+        <tbody id="draftBoardBody">
+            {% for player in players %}
+                <tr>
+                    <th scope="row">{{ player.player_id }}</th>
+                    <td>{{ player.player_name_first }}</td>
+                    <td>{{ player.player_name_last }}</td>
+                    <td>{{ player.college_team }}</td>
+                    <td>{{ player.position }}</td>
+                    <td>
+                        <form action="/draft_player" method="post">
+                            <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
+                            <button type="submit" {% if player.is_selected %}disabled{% endif %}>Draft</button>
+                        </form>
+                    </td>
+                    <td value={{player.is_selected}} class="hidden-value">{{player.is_selected}}</td>
+                    <td>
+                        <form action="/score_player" method="post">
+                            <input type="number" name="nfl_draft_pick" value={{ player.nfl_draft_pick or "" }}></input>
+                            <input name="player_id" value={{player.player_id}} class="hidden-value"/>
+                            <button type="submit">Score</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{%- endmacro %}
