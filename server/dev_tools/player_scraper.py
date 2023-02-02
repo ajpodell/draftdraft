@@ -18,10 +18,10 @@ def scrape_player_data():
         college_elements = tree.xpath('//*[@id="playerdata"]/div/p[1]')
         position_elements = tree.xpath('//*[@id="playerdata"]/div/p[2]')
 
-        for i in range(len(name_elements)):
-            full_name = name_elements[i].text.strip().split(" ")
-            college_team = college_elements[i].text.strip()
-            position = position_elements[i].text.strip()
+        for j in range(len(name_elements)):
+            full_name = name_elements[j].text.strip().split(" ")
+            college_team = college_elements[j].text.strip()
+            position = position_elements[j].text.strip()
             players.append(
                 Player(
                     player_name_first=f'{full_name[0]}',
