@@ -5,9 +5,11 @@ Revises:
 Create Date: 2023-01-22 01:46:15.488733
 
 """
+from typing import Sequence
+
 from alembic import op
 import sqlalchemy as sa
-
+from sqlalchemy.schema import Sequence, CreateSequence
 
 # revision identifiers, used by Alembic.
 revision = '5f48bbb13b41'
@@ -45,6 +47,9 @@ def upgrade():
     sa.PrimaryKeyConstraint('row_id')
     )
     # ### end Alembic commands ###
+
+    # Need to add sequences manually
+    op.execute(CreateSequence(Sequence('selection_seq')))
 
 
 def downgrade():
