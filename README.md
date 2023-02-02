@@ -44,6 +44,9 @@
   * _Note: my IDE made one for me and I don't fully get it - Greg_
 * install the requirements
   * `python3 -m pip install -r requirements.txt`
+* set up .env file
+  * create a `.env` file
+  * _Note: use `.env.example` as a sample_and replace values with yours
 * put the project in your path
   * `python setup.py develop`
   * _Note: I dont fully understand this part - Aaron_

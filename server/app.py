@@ -4,7 +4,6 @@ from flask import Flask, redirect, url_for, request, render_template
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 
-
 from blueprints import (
     auth_blueprint,
     draft_blueprint,
@@ -15,7 +14,7 @@ from models.selection import Selection
 from models.user import User
 
 
-def create_app(debug=True):
+def create_app():
     """ configure our application object. 
 
     TODO: Right now were just adding blueprints, but could set up debug or configure db here.
@@ -24,9 +23,7 @@ def create_app(debug=True):
     # Flask constructor takes the name of
     # current module (__name__) as argument.
     app = Flask(__name__)
-
-    # aaron going rogue - figure this out
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://localhost/draftdraft"
+    app.config.from_pyfile('config.py')
 
     # sqlalchemy code largely copied from
     # https://realpython.com/flask-by-example-part-2-postgres-sqlalchemy-and-alembic/
@@ -36,11 +33,10 @@ def create_app(debug=True):
     # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
-    if debug:
+    if app.config.get('DEBUG'):
         # run() method of Flask class runs the application
         # on the local development server.
         # TODO: this should be like an "if debug" type of thing -- 
-        app.config['TEMPLATES_AUTO_RELOAD'] = True
         app.secret_key = 'super_secret_key'
 
     # configure blueprints
@@ -56,13 +52,15 @@ def create_app(debug=True):
     def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
+
     return app
+
 
 def run_app():
     app = create_app()
-    app.run(debug=True)
+    app.run(debug=app.config.get('DEBUG'))
 
- 
+
 # main driver function
 if __name__ == '__main__':
     run_app()
