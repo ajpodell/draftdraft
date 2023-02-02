@@ -30,7 +30,7 @@
 {% endif %}
 
 <h1>Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}Draft order not set{% endif %}</h1>
-<table class="table">
+<table class="table table-bordered border-3">
     <tr>
         <th>Pick</th>
         <th>Team</th>
@@ -49,7 +49,7 @@
     // todo: rename this something better
     function go() {
         console.log('go')
-        let showSelected = $('#isSelectedCheckbox').is(':checked');
+        let showSelected = $('#showSelectedCheckbox').is(':checked');
         console.log(showSelected)
         if (showSelected ){
             $('#player_table').bootstrapTable('filterBy', {});
@@ -63,16 +63,21 @@
 </script>
 
 Available Players
-<div>
-    <label><input id="isSelectedCheckbox" type="checkbox" onclick="return go();">Show drafted players</label>
-    <table class="table"
+<div class="white_border">
+    <div id="filteringContainer" class="white_border" style="display: flex;">
+        <label><input id="showSelectedCheckbox" type="checkbox" onclick="return go();">Show drafted players</label>
+    </div>
+
+    <table class="table table-bordered border-3"
         id="player_table"
-        data-filter-control="true"
+        data-filter-control="false"
         data-show-search-clear-button="false"
-        data-show-columns="true"
-        data-show-multi-sort="true"
+        data-show-columns="false"
+        data-show-multi-sort="false"
         data-pagination="true"
         data-page-size="25"
+        data-search="true"
+        data-toolbar="#filteringContainer"
     >
         <thead>
             <tr>
@@ -86,7 +91,7 @@ Available Players
                 <th data-field="nfl_pick" scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
             </tr>
         </thead>
-        <tbody>
+        <tbody id="draftBoardBody">
             {% for player in players %}
                 <tr>
                     <th scope="row">{{ player.player_id }}</th>
@@ -117,12 +122,13 @@ Available Players
 </script>
 
 <script>
-    $(function() {
+    $(document).ready(function(){
         // This is silly but it only works if this first call is present
         // Its pretty slow though, there must be a better way to do this
         $('#player_table').bootstrapTable();
         $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
     })
 </script>
+
 
 {% endblock %}
