@@ -92,10 +92,23 @@ def home():
 
     next_pick = next_up()
 
-    player_queue = db.session.query(Player).join(DraftQueue, DraftQueue.player_id == Player.player_id).filter_by(team_id=current_user.user_id).order_by(DraftQueue.queue_order).all()
+    player_queue = db.session.query(Player).join(DraftQueue, DraftQueue.player_id == Player.player_id).filter_by(team_id=current_user.user_id).order_by(DraftQueue.queue_order, DraftQueue.row_id).all()
     print(player_queue)
 
     return render_template('draft_page.html', players=players(), pick_order=pick_order, next_pick=next_pick, playerQueue=player_queue)
+
+@draft.route('/add_to_queue', methods=['POST'])
+def add_to_queue():
+    form = request.form
+    db.session.add(
+        DraftQueue(
+            player_id=form['player_id'],
+            team_id=current_user.user_id,
+        )
+    )
+    db.session.commit()
+    return redirect(url_for('draft.home'))
+
 
 def players():
     # TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model

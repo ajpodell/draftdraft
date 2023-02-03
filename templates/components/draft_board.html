@@ -24,6 +24,9 @@
     >
         <thead>
             <tr>
+                {% if boardType == "DRAFTBOARD" %}
+                <th data-field="addToQueue" scope="col">Queue</th>
+                {% endif %}
                 <th data-field="adp" data-sortable="false" scope="col">ADP</th>
                 <th data-field="first" data-filter-control="input" data-sortable="false" scope="col">First</th>
                 <th data-field="last" data-filter-control="input" data-sortable="false" scope="col">Last</th>
@@ -43,6 +46,15 @@
         <tbody id="draftBoardBody">
             {% for player in players %}
                 <tr>
+                    {% if boardType == "DRAFTBOARD" %}
+                    <td>
+                        <form action="/add_to_queue" method="post">
+                            <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
+                            <!-- would be nice to have this also disable if they are already in your queue -->
+                            <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>+</button>
+                        </form>
+                    </td>
+                    {% endif %}
                     <th scope="row">{{ player.player_id }}</th>
                     <td>{{ player.player_name_first }}</td>
                     <td>{{ player.player_name_last }}</td>
