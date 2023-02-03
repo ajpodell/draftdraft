@@ -2,16 +2,17 @@
 <!-- boardType is either "DRAFTBOARD" or "SCOREBOARD" -->
 
 <div id="draftBoard" class="white_border">
-    Available Players
     <div id="filteringContainer" class="white_border" >
         <label>
-            <input id="showSelectedCheckbox" type="checkbox" onclick="return toggleShowSelected();">
+            <input id="showSelectedCheckbox" type="checkbox" onclick="toggleShowSelected(this);">
             Show drafted players
         </label>
     </div>
 
+        <!-- this is so terrible. need to get rid of this stupid bootstrap call.
+            maybe look at data/data-url options or datables -->
     <table class="table table-bordered border-3"
-        id="player_table"
+        id= {{ "playerTable" + boardType }}
         data-filter-control="false"
         data-show-search-clear-button="false"
         data-show-columns="false"
@@ -29,7 +30,7 @@
                 <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
                 <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
 
-                {% if boardType == "DRAFTBOARD" %}
+                {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
                 <th data-field="draft_btn" data-filter-control="" data-show-filter-control-switch="true" data-filter-control-visible="true" data-filter-custom-search="gjo" scope="col"></th>
                 {% endif %}
                 <th data-field="is_drafted" class="hidden-value" colspan=0></th>
@@ -47,7 +48,7 @@
                     <td>{{ player.player_name_last }}</td>
                     <td>{{ player.college_team }}</td>
                     <td>{{ player.position }}</td>
-                    {% if boardType == "DRAFTBOARD" %}
+                    {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
                     <td>
                         <form action="/draft_player" method="post">
                             <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
@@ -72,22 +73,43 @@
 </div>
 
 <script>
+    /*
+    this doenst work. and im not sure why. and this whole function needs to die
+    TODO: fix the need to rebootstrap like this. this is going to be a nightmare so fast
+   */
     $(document).ready(function(){
         // This is silly but it only works if this first call is present
         // Its pretty slow though, there must be a better way to do this
-        $('#player_table').bootstrapTable();
-        $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
+            /*
+            for (playertable in ["#playerTableDRAFTBOARD", "#playerTableSCOREBOARD", "#playerTablePLAYERQUEUE"]){
+                $(playertable).bootstrapTable();
+                $(playertable).bootstrapTable('filterBy', { is_drafted: "False"});
+            }
+   */
+        $('#playerTableDRAFTBOARD').bootstrapTable();
+        $('#playerTableDRAFTBOARD').bootstrapTable('filterBy', { is_drafted: "False"});
+
+        $('#playerTableSCOREBOARD').bootstrapTable();
+        $('#playerTableSCOREBOARD').bootstrapTable('filterBy', { is_drafted: "False"});
+
+        $('#playerTablePLAYERQUEUE').bootstrapTable();
+        $('#playerTablePLAYERQUEUE').bootstrapTable('filterBy', { is_drafted: "False"});
     })
+
 </script>
 
 <script>
-    // todo: rename this something better
-    function toggleShowSelected() {
-        if ($('#showSelectedCheckbox').is(':checked') ){
-            $('#player_table').bootstrapTable('filterBy', {});
+    function toggleShowSelected(cb) {
+        if (cb.checked){
+            $('#playerTableDRAFTBOARD').bootstrapTable('filterBy', {});
+            $('#playerTableSCOREBOARD').bootstrapTable('filterBy', {});
+            $('#playerTablePLAYERQUEUE').bootstrapTable('filterBy', {});
         }
         else {
-            $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
+
+            $('#playerTableDRAFTBOARD').bootstrapTable('filterBy', { is_drafted: "False"});
+            $('#playerTableSCOREBOARD').bootstrapTable('filterBy', { is_drafted: "False"});
+            $('#playerTablePLAYERQUEUE').bootstrapTable('filterBy', { is_drafted: "False"});
         }
         return true;
     }

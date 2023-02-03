@@ -15,6 +15,7 @@ from sqlalchemy import desc, asc, nulls_last
 
 from models.base import db
 from models.draft import Draft
+from models.draft_queue import DraftQueue
 from models.player import Player
 from models.selection import Selection
 from models.user import User
@@ -91,7 +92,10 @@ def home():
 
     next_pick = next_up()
 
-    return render_template('draft_page.html', players=players(), pick_order=pick_order, next_pick=next_pick)
+    player_queue = db.session.query(Player).join(DraftQueue, DraftQueue.player_id == Player.player_id).filter_by(team_id=current_user.user_id).order_by(DraftQueue.queue_order).all()
+    print(player_queue)
+
+    return render_template('draft_page.html', players=players(), pick_order=pick_order, next_pick=next_pick, playerQueue=player_queue)
 
 def players():
     # TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model

@@ -1,4 +1,5 @@
 <!-- This is really turning into the page to make picks. -->
+<!-- inputs: players, pick_order, next_pick:Pick, player_queue -->
 {% import 'components/draft_board.html' as draftBoard %}
 
 {% extends "base.html" %}
@@ -46,7 +47,15 @@
         </table>
     </div>
 
-    {{ draftBoard.draftBoard(players, "DRAFTBOARD") }}
+    <div id="playerQueue">
+        <h3>Your Queue</h3>
+        {{ draftBoard.draftBoard(playerQueue, "PLAYERQUEUE") }}
+    </div>
+
+    <div id="draftboardContainer">
+        <h3> Draftboard</h3>
+        {{ draftBoard.draftBoard(players, "DRAFTBOARD") }}
+    </div>
 </div>
 
 <script>
