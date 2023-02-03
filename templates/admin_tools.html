@@ -1,20 +1,34 @@
+{% import 'components/draft_board.html' as draftBoard %}
+
 {% extends "base.html" %}
 
 {% block content %}
+<div>
 
     <div class="card" style="width: 18rem;">
         <div class="card-header">
             <h4>Add to player pool</h4>
         </div>
         <div class="card-body">
-            <form action="/players" method="post" target="dummyframe">
+            <form action="/players" method="post">
                 <p>First Name: <br> <input type="text" name="player_name_first"/></p>
                 <p>Last Name: <br> <input type="text" name="player_name_last"/></p>
                 <p>College Team: <br> <input type="text" name="college_team"/></p>
                 <p>Position: <br> <input type="text" name="position"/></p>
-                <p><input type="submit" value="submit"/></p>
+                <p><input type="submit" value="submit" class="btn btn-secondary"/></p>
             </form>
         </div>
     </div>
 
+    <div id="scoreboard" style="display: none;">
+    {{ draftBoard.draftBoard(players, "SCOREBOARD") }}
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function(){
+        $( '#scoreboard').fadeIn('fast')
+    })
+</script>
 {% endblock %}

@@ -6,13 +6,10 @@
 <!-- wonder if theres a better way to get stylesheets in. there must be. -->
 {% block stylesheet %}
     <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/draft_page.css') }}">
-    <!-- add filtering stylesheet -->
-    <link href="https://unpkg.com/bootstrap-table@1.21.2/dist/bootstrap-table.min.css" rel="stylesheet">
 
 {% endblock %}
 
 {% block content %}
-<iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
 
 {% with errors = get_flashed_messages(category_filter=["error"]) %}
 {% if errors %}
@@ -49,33 +46,13 @@
         </table>
     </div>
 
-    {{ draftBoard.draftBoard(players) }}
+    {{ draftBoard.draftBoard(players, "DRAFTBOARD") }}
 </div>
 
 <script>
     $(document).ready(function(){
-        // This is silly but it only works if this first call is present
-        // Its pretty slow though, there must be a better way to do this
-        $('#player_table').bootstrapTable();
-        $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
-
         $( '#draftPage').fadeIn('fast')
-
     })
-</script>
-
-<script>
-    // todo: rename this something better
-    function toggleShowSelected() {
-        if ($('#showSelectedCheckbox').is(':checked') ){
-            $('#player_table').bootstrapTable('filterBy', {});
-        }
-        else {
-            $('#player_table').bootstrapTable('filterBy', { is_drafted: "False"});
-        }
-        return true;
-    }
-
 </script>
 
 {% endblock %}
