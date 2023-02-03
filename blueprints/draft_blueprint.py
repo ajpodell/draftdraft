@@ -89,18 +89,15 @@ def home():
     # kind of want to put home in a dedicated "make pick" page - but thats a later problem
     pick_order = db.session.query(Draft).order_by(Draft.pick_order)
 
+    next_pick = next_up()
+
+    return render_template('draft_page.html', players=players(), pick_order=pick_order, next_pick=next_pick)
+
+def players():
     # TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model
     # looking at the draft
     players = db.session.query(Player).order_by(Player.player_id).all()
-
-    next_pick = next_up()
-
-    return render_template('draft_page.html', players=players, pick_order=pick_order, next_pick=next_pick)
-
-@draft.route('/players')
-def players():
-    players = db.session.query(Player).all()
-    return list(player.__repr__() for player in players)
+    return players
 
 
 @draft.route('/players', methods=['POST'])
@@ -114,7 +111,7 @@ def add_player():
     db.session.add(player)
     db.session.commit()
 
-    return redirect(url_for('draft.home'))
+    return render_template('admin_tools.html', players=players())
 
 
 @draft.route('/add_selection', methods=['POST'])
@@ -131,7 +128,6 @@ def add_selection():
 
 
 @draft.route('/draft')  # would be cool to have a "league" template var
-# @login_required
 def view_draft():
     # TODO: generally not a fan of passing around sqlalchemy objects --- but it is pretty convenient so :shrug:
     all_picks = db.session.query(Selection).all()
@@ -224,4 +220,4 @@ def score_player():
 
 @draft.route('/admin_tools')
 def admin_tools():
-    return render_template('admin_tools.html')
+    return render_template('admin_tools.html', players=players())
