@@ -9,7 +9,7 @@ class DraftQueue(db.Model):
     
     row_id = db.Column(db.Integer, primary_key=True)
 
-    player_id = db.Column(db.Integer(), ForeignKey("Player.player_id"))
-    team_id = db.Column(db.Integer(), ForeignKey("User.user_id"))
-    order = db.Column(db.Integer())
+    player_id = db.Column(db.Integer(), ForeignKey("player.player_id"))
+    team_id = db.Column(db.Integer(), ForeignKey("user.user_id"))
+    queue_order = db.Column(db.Integer())
     # order - can we build a table to reorder them?
