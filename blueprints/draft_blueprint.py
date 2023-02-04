@@ -152,11 +152,13 @@ def view_draft():
     # get all teams
     teams = db.session.query(User).all()
 
+    team_standings = User.standings(db.session)
     return render_template('draft.html',
                            selections=all_picks,
                            teams=teams,
                            best_selections=generate_leaderboard('best'),
-                           worst_selections=generate_leaderboard('worst'))
+                           worst_selections=generate_leaderboard('worst'),
+                           standings=team_standings)
 
 
 @draft.route('/draft_player', methods=['POST'])
@@ -174,7 +176,7 @@ def draft_player():
 
     # picked = db.session
     picked = Selection.query.filter_by(player_id=selected_player_id).one_or_none()
-    if(picked):
+    if (picked):
         flash('Player already selected', 'error')
         return redirect(url_for('draft.home'))
 
@@ -183,7 +185,7 @@ def draft_player():
         return redirect(url_for('draft.home'))
 
     selection = Selection(player_id=selected_player_id,
-                              selecting_team_id=next_pick.user_id)  # wasnt working with team_id
+                          selecting_team_id=next_pick.user_id)  # wasnt working with team_id
     db.session.add(selection)
     db.session.commit()
     return redirect(url_for('draft.view_draft'))
