@@ -1,0 +1,30 @@
+{% macro teamScore(team, standings) -%}
+    <div class="card m-4">
+        <div class="card-header">
+            {{ team.team_name }}: {{ team.team_score }}
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Pick</th>
+                    <th scope="col">Player</th>
+                    <th scope="col">NFL Draft Result</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for selection in team.selections %}
+                    <tr>
+                        <td>{{ selection.draftdraft_selection }}</td>
+                        <td>{{ selection.player_name }}</td>
+                        <td>{{ selection.player.nfl_draft_pick }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            Standings: {{ standings[team] }} out of {{ standings|length }}
+        </div>
+    </div>
+{%- endmacro %}
