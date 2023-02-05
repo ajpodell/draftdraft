@@ -35,22 +35,21 @@ class User(UserMixin, db.Model):
         for user in users:
             users_w_total_score[user] = user.team_score
 
-        users_w_total_score_sorted = sorted(users_w_total_score, key=lambda u: users_w_total_score[u])
+        users_sorted_by_score = sorted(users_w_total_score, key=lambda u: users_w_total_score[u])
 
         users_w_standings = {}
-        prev_score = users_w_total_score.get(users_w_total_score_sorted[0])
+        prev_score = users_w_total_score.get(users_sorted_by_score[0])
         standings_counter = 1
         tie_counter = 0
-        users_w_standings[users_w_total_score_sorted[0]] = standings_counter
-        for user in users_w_total_score_sorted[1:]:
+        users_w_standings[users_sorted_by_score[0]] = standings_counter
+        for user in users_sorted_by_score[1:]:
             if prev_score != users_w_total_score[user]:
-                standings_counter += 1
-                users_w_standings[user] = standings_counter + tie_counter
+                standings_counter += (tie_counter + 1)
                 tie_counter = 0
             else:
                 tie_counter += 1
-                users_w_standings[user] = standings_counter
 
+            users_w_standings[user] = standings_counter
             prev_score = users_w_total_score[user]
 
         return users_w_standings
