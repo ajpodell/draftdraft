@@ -20,7 +20,8 @@
             <th>Position</th>
         </tr>
 
-        Picks
+        <h3 class="m-4"> Draft draft picks </h3>
+
         {% for selection in selections %}
             <tr style="padding: 10px; background-color: #EEE; margin: 20px">
                 <td>{{ selection.draftdraft_selection }}</td>
@@ -32,8 +33,13 @@
         {% endfor %}
     </table>
 
-    <!-- Team by team view-->
+    <hr class="m-5">
+    <h3 class="m-4"> Team by team results </h3>
+
     {{ team_scores.teamScores(teams, standings) }}
+
+    <hr class="m-5">
+    <h3 class="m-4"> Best/Worst selections </h3>
 
     <div class="container">
         <div class="row">
