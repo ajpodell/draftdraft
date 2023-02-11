@@ -10,6 +10,7 @@ from blueprints import (
     draft_blueprint,
 )
 from models.base import db
+from models.draft_queue import DraftQueue
 from models.player import Player
 from models.selection import Selection
 from models.user import User
