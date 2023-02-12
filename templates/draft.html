@@ -10,6 +10,30 @@
 {% endblock %}
 
 {% block content %}
+
+{#    TODO: this automagically turns header tags as elements in the TOC. would rather explicitly add them.#}
+{#          maybe use this instead? (https://getbootstrap.com/docs/5.0/components/scrollspy/#item-2)#}
+{#          also make styig way better#}
+    <div data-spy="scroll" data-target="#toc">
+        <div class="container">
+            <div class="row">
+                <!-- sidebar, which will move to the top on a small screen -->
+                <div class="col-sm-3">
+                    <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+                </div>
+                test <br>
+                tes1 <br>
+
+
+            </div>
+        </div>
+    </div>
+
+{#    <div>#}
+{#        <div class="row">#}
+{#            <nav id="toc" data-toggle="toc" class="sticky-top"></nav>#}
+{#        </div>#}
+{#    </div>#}
     <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
     <table class='table'>
         <tr>
@@ -39,6 +63,7 @@
     {{ team_scores.teamScores(teams, standings) }}
 
     <hr class="m-5">
+
     <h3 class="m-4"> Best/Worst selections </h3>
 
     <div class="container">

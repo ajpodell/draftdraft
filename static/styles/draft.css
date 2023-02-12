@@ -1,3 +1,7 @@
 .draft_table {
     color: red  /* just testing that this is getting picked up */
 }
+
+nav[data-toggle="toc"] {
+  top: 42px;
+}
