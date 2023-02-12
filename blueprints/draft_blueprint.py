@@ -4,6 +4,7 @@ import random
 from flask import (
     Blueprint,
     Flask,
+    Response,
     flash,
     redirect,
     render_template,
@@ -188,6 +189,10 @@ def draft_player():
                           selecting_team_id=next_pick.user_id)  # wasnt working with team_id
     db.session.add(selection)
     db.session.commit()
+
+    # put the event on the queue
+    for q in subscribers:
+        q.put('a pick was made! {}'.format(selected_player_id))
     return redirect(url_for('draft.view_draft'))
 
 
@@ -240,3 +245,36 @@ def score_player():
 @draft.route('/admin_tools')
 def admin_tools():
     return render_template('admin_tools.html', players=players())
+
+
+
+# test code to push updates over
+import time
+import queue
+subscribers = []
+
+
+@draft.route('/test_stream_page')
+def test_stream_page():
+    return render_template('test_stream.html')
+
+@draft.route('/test_stream') 
+def test_stream():
+    # def get_message():
+    #     # time.sleep(1.0)
+    #     for i in range(10000000): pass
+    #     return time.ctime()
+
+    def event_stream():
+        q = queue.Queue()
+        subscribers.append(q)
+        while True:
+            data = q.get()  # use that := operator
+            print(f'getting data: {data}')
+            yield 'data: {}\n\n'.format(data)
+
+
+
+        # while x := input('type here: '):
+        #     yield x
+    return Response(event_stream(), mimetype='text/event-stream')

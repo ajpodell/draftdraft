@@ -1,0 +1,13 @@
+<div id="target">
+    Aaron hi
+</div>
+
+<script>
+    let targetContainer = document.getElementById('target')
+    let eventSource = new EventSource("/test_stream");
+    eventSource.onmessage = function(e) {
+            console.log('new message: e')
+            targetContainer.innerHTML = e.data;
+    }
+</script>
+
