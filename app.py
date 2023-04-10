@@ -1,5 +1,7 @@
 # Importing flask module in the project is mandatory
 # An object of Flask class is our WSGI application.
+import os
+
 from flask import Flask, redirect, url_for, request, render_template
 from flask_login import LoginManager
 from flask_migrate import Migrate
@@ -67,7 +69,8 @@ def run_app():
 
 
 app = create_app()
-app.run(debug=app.config.get('DEBUG'), port="8000")
+port = int(os.environ.get("PORT", 5000))
+app.run(host='0.0.0.0', port=port)
 
 # main driver function
 if __name__ == '__main__':
