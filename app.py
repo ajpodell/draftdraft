@@ -66,10 +66,10 @@ def run_app():
     app.run(debug=app.config.get('DEBUG'))
 
 
-app = create_app()
+# app = create_app()
 
 # main driver function
 if __name__ == '__main__':
-    app.run(debug=app.config.get('DEBUG'))
+    # app.run(debug=app.config.get('DEBUG'))
     run_app()
 
