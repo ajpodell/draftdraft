@@ -67,7 +67,7 @@ def run_app():
 
 
 app = create_app()
-app.run(debug=app.config.get('DEBUG'))
+app.run(debug=app.config.get('DEBUG'), port="8000")
 
 # main driver function
 if __name__ == '__main__':
