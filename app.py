@@ -71,5 +71,7 @@ def run_app():
 # main driver function
 if __name__ == '__main__':
     # app.run(debug=app.config.get('DEBUG'))
-    run_app()
+    app = create_app()
+    app.run(debug=app.config.get('DEBUG'))
+    # run_app()
 
