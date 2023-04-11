@@ -8,7 +8,7 @@
 
 ### Deploying Code
 - run `git push heroku main` to push main to heroku
-- run `git push heroku {branch_name}}:master` to deploy a specific branch to heroku
+- run `git push heroku {branch_name}:master` to deploy a specific branch to heroku
 - run `heroku logs tail` to tail the logs
 
 ### Postgres
