@@ -147,14 +147,14 @@ def add_selection():
 @draft.route('/draft')  # would be cool to have a "league" template var
 def view_draft():
     # TODO: generally not a fan of passing around sqlalchemy objects --- but it is pretty convenient so :shrug:
-    all_picks = db.session.query(Selection).all()
+    all_picks_reversed = db.session.query(Selection).order_by(desc(Selection.draftdraft_selection)).all()
 
     # get all teams
     teams = db.session.query(User).all()
 
     team_standings = User.standings(db.session)
     return render_template('draft.html',
-                           selections=all_picks,
+                           selections_desc=all_picks_reversed,
                            teams=teams,
                            best_selections=generate_leaderboard('best'),
                            worst_selections=generate_leaderboard('worst'),
