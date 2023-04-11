@@ -63,13 +63,13 @@ def create_app():
     return app
 
 
-app_context = create_app()  # The Heroku server needs access to the flask app object.
+app_context = create_app()  # The Heroku server needs access to the flask app object. See Procfile for usage of this
 
 
 def run_app():
-    port = int(os.environ.get("PORT", 5000))  # for Heroku deployment
+    port = int(os.environ.get("PORT", 5000))
     app_context.run(host='0.0.0.0', port=port, debug=app_context.config.get('DEBUG'))
-
+    # both port and host are for Heroku deployment
 
 # main driver function
 if __name__ == '__main__':
