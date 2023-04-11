@@ -63,19 +63,14 @@ def create_app():
     return app
 
 
-app = create_app()
+app_context = create_app()  # The Heroku server needs access to the flask app object.
+
 
 def run_app():
-    # app = create_app()
-    # app.run(debug=app.config.get('DEBUG'))
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
-
-# port = int(os.environ.get("PORT", 5000))
-# app.run(host='0.0.0.0', port=port)
+    port = int(os.environ.get("PORT", 5000))  # for Heroku deployment
+    app_context.run(host='0.0.0.0', port=port, debug=app_context.config.get('DEBUG'))
 
 
 # main driver function
 if __name__ == '__main__':
     run_app()
-

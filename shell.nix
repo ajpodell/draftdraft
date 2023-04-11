@@ -3,5 +3,6 @@
 pkgs.mkShell {
   packages = [
     pkgs.heroku
+    pkgs.postgresql #needed to run a heroku psql console
   ];
 }
