@@ -11,26 +11,40 @@
 
 {% block content %}
     <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
-    <table class='table'>
-        <tr>
-            <th>Pick</th>
-            <th>Team</th>
-            <th>Player</th>
-            <th>College</th>
-            <th>Position</th>
-        </tr>
+    <table class='table table-bordered border-3'
+           id={{ "draftResultsTable" }}
+           data-filter-control="false"
+           data-show-search-clear-button="false"
+           data-show-columns="false"
+           data-show-multi-sort="false"
+           data-pagination="true"
+           data-page-size="25"
+           data-search="true"
+           data-toolbar="#filteringContainer"
+    >
+        <thead>
+            <tr>
+                <th data-field="pick" data-filter-control="input" data-sortable="false" scope="col">Pick</th>
+                <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
+                <th data-field="player" data-filter-control="input" data-sortable="false" scope="col">Player</th>
+                <th data-field="college" data-filter-control="select" data-sortable="false" scope="col">College</th>
+                <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
+            </tr>
+        </thead>
 
         <h3 class="m-4"> Draft draft picks </h3>
 
-        {% for selection in selections %}
-            <tr style="padding: 10px; background-color: #EEE; margin: 20px">
-                <td>{{ selection.draftdraft_selection }}</td>
-                <td>{{ selection.team.username }}</td>
-                <td>{{ selection.player.player_name }}</td>
-                <td>{{ selection.player.college_team }}</td>
-                <td>{{ selection.player.position }}</td>
-            </tr>
-        {% endfor %}
+        <tbody>
+            {% for selection in selections_desc %}
+                <tr>
+                    <td>{{ selection.draftdraft_selection }}</td>
+                    <td>{{ selection.team.username }}</td>
+                    <td>{{ selection.player.player_name }}</td>
+                    <td>{{ selection.player.college_team }}</td>
+                    <td>{{ selection.player.position }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
 
     <hr class="m-5">
@@ -52,4 +66,12 @@
         </div>
     </div>
 
-{% endblock %}ll
+
+<script>
+    $(document).ready(function(){
+        $('#draftResultsTable').bootstrapTable();
+    })
+
+</script>
+
+{% endblock %}
