@@ -15,4 +15,6 @@
 - run `heroku run flask db upgrade` to run db migrations
 - run `heroku run python dev_tools/player_scraper.py` to seed player data
 - run `heroku pg:psql postgresql-defined-81660 --app the-draft-draft` to open a postgres console
+  - when querying tables, you will likely need to put 'public' before the table name
+    - ex) `select * from public.user`
 - see the `SQLALCHEMY_DATABASE_URI` env var for how the app and db are configured
