@@ -1,4 +1,5 @@
 """ The main blueprint file for now."""
+import math
 import random
 
 from flask import (
@@ -65,22 +66,26 @@ def generate_leaderboard(leaderboard_type):
 
 def next_up():
     """ returns team id of the next team up"""
-    last_pick = db.session.query(Selection).order_by(Selection.draftdraft_selection.desc()).first()
-    if last_pick is None:
-        next_pick = 0
+    last_pick_number = db.session.query(Selection).order_by(Selection.draftdraft_selection.desc()).first()
+    if last_pick_number is None:
+        prev_pick = 0
     else:
-        next_pick = last_pick.draftdraft_selection
+        prev_pick = last_pick_number.draftdraft_selection
 
+    next_pick_number = prev_pick + 1
     all_teams = db.session.query(User).all()
-    total_teams = len(all_teams)
-    next_pick = (next_pick % len(all_teams)) + 1
+    team_count = len(all_teams)
+    current_round = math.ceil(next_pick_number / team_count)
+    pick_within_round = (next_pick_number % team_count) or team_count
+    if current_round % 2 == 0:
+        pick_within_round = team_count - pick_within_round + 1
 
     # if no draft has been set yet then return empty for now.
     # the below code assumes if any team has a pick all teams have a piack
     if not all_teams or not all_teams[0].pick:
         return None
 
-    return next(team for team in all_teams if team.pick.pick_order == next_pick)
+    return next(team for team in all_teams if team.pick.pick_order == pick_within_round)
 
 
 @draft.route('/home')  # maybe theres a better way to do url_for('/')
