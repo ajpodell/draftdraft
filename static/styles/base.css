@@ -8,3 +8,14 @@
     max-width: 960px;
     margin: auto;
 }
+
+.container {
+    border: .5px solid white;
+    margin-bottom: 40px;
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+.fill {
+    /* height: 100%; */
+}

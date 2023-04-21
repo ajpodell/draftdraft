@@ -1,7 +1,7 @@
 {% macro draftBoard(players, boardType) -%}
 <!-- boardType is either "DRAFTBOARD" or "SCOREBOARD" -->
 
-<div id="draftBoard" class="white_border">
+<div id="draftBoard" class="white_border fill">
     <div id="filteringContainer" class="white_border" >
         <label>
             <input id="showSelectedCheckbox" type="checkbox" onclick="toggleShowSelected(this);">
@@ -11,77 +11,79 @@
 
         <!-- this is so terrible. need to get rid of this stupid bootstrap call.
             maybe look at data/data-url options or datables -->
-    <table class="table table-bordered border-3"
-        id= {{ "playerTable" + boardType }}
-        data-filter-control="false"
-        data-show-search-clear-button="false"
-        data-show-columns="false"
-        data-show-multi-sort="false"
-        data-pagination="true"
-        data-page-size="25"
-        data-search="true"
-        data-toolbar="#filteringContainer"
-    >
-        <thead>
-            <tr>
-                {% if boardType == "DRAFTBOARD" %}
-                <th data-field="addToQueue" scope="col">Queue</th>
-                {% endif %}
-                <th data-field="adp" data-sortable="false" scope="col">ADP</th>
-                <th data-field="first" data-filter-control="input" data-sortable="false" scope="col">First</th>
-                <th data-field="last" data-filter-control="input" data-sortable="false" scope="col">Last</th>
-                <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
-                <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
-
-                {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
-                <th data-field="draft_btn" data-filter-control="" data-show-filter-control-switch="true" data-filter-control-visible="true" data-filter-custom-search="gjo" scope="col"></th>
-                {% endif %}
-                <th data-field="is_drafted" class="hidden-value" colspan=0></th>
-
-                {% if boardType == "SCOREBOARD" %}
-                <th data-field="nfl_pick" scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody id="draftBoardBody">
-            {% for player in players %}
+    <div class="table-responsive fill">
+        <table class="table table-bordered border-3"
+            id= {{ "playerTable" + boardType }}
+            data-filter-control="false"
+            data-show-search-clear-button="false"
+            data-show-columns="false"
+            data-show-multi-sort="false"
+            data-pagination="true"
+            data-page-size="25"
+            data-search="true"
+            data-toolbar="#filteringContainer"
+        >
+            <thead>
                 <tr>
                     {% if boardType == "DRAFTBOARD" %}
-                    <td>
-                        <form action="/add_to_queue" method="post">
-                            <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                            <!-- would be nice to have this also disable if they are already in your queue -->
-                            <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>+</button>
-                        </form>
-                    </td>
+                    <th data-field="addToQueue" scope="col">Queue</th>
                     {% endif %}
-                    <th scope="row">{{ player.player_id }}</th>
-                    <td>{{ player.player_name_first }}</td>
-                    <td>{{ player.player_name_last }}</td>
-                    <td>{{ player.college_team }}</td>
-                    <td>{{ player.position }}</td>
+                    <th data-field="adp" data-sortable="false" scope="col">ADP</th>
+                    <th data-field="first" data-filter-control="input" data-sortable="false" scope="col">First</th>
+                    <th data-field="last" data-filter-control="input" data-sortable="false" scope="col">Last</th>
+                    <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
+                    <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
+
                     {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
-                    <td>
-                        <form action="/draft_player" method="post">
-                            <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                            <button class="btn btn-primary" type="submit" {% if player.is_selected %}disabled{% endif %}>Draft</button>
-                        </form>
-                    </td>
+                    <th data-field="draft_btn" data-filter-control="" data-show-filter-control-switch="true" data-filter-control-visible="true" data-filter-custom-search="gjo" scope="col"></th>
                     {% endif %}
-                    <td value={{player.is_selected}} class="hidden-value">{{player.is_selected}}</td>
+                    <th data-field="is_drafted" class="hidden-value" colspan=0></th>
+
                     {% if boardType == "SCOREBOARD" %}
-                    <td>
-                        <form action="/score_player" method="post">
-                            <input type="number" name="nfl_draft_pick" value={{ player.nfl_draft_pick or "" }}></input>
-                            <input name="player_id" value={{player.player_id}} class="hidden-value"/>
-                            <button type="submit" class="btn btn-secondary">Score</button>
-                        </form>
-                    </td>
+                    <th data-field="nfl_pick" scope="col">NFL Pick</th>  <!-- tbd if we want this optional or on another page -->
                     {% endif %}
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody id="draftBoardBody">
+                {% for player in players %}
+                    <tr>
+                        {% if boardType == "DRAFTBOARD" %}
+                        <td>
+                            <form action="/add_to_queue" method="post">
+                                <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
+                                <!-- would be nice to have this also disable if they are already in your queue -->
+                                <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>+</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                        <th scope="row">{{ player.player_id }}</th>
+                        <td>{{ player.player_name_first }}</td>
+                        <td>{{ player.player_name_last }}</td>
+                        <td>{{ player.college_team }}</td>
+                        <td>{{ player.position }}</td>
+                        {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
+                        <td>
+                            <form action="/draft_player" method="post">
+                                <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
+                                <button class="btn btn-primary" type="submit" {% if player.is_selected %}disabled{% endif %}>Draft</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                        <td value={{player.is_selected}} class="hidden-value">{{player.is_selected}}</td>
+                        {% if boardType == "SCOREBOARD" %}
+                        <td>
+                            <form action="/score_player" method="post">
+                                <input type="number" name="nfl_draft_pick" value={{ player.nfl_draft_pick or "" }}></input>
+                                <input name="player_id" value={{player.player_id}} class="hidden-value"/>
+                                <button type="submit" class="btn btn-secondary">Score</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <script>
