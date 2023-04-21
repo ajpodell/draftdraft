@@ -10,10 +10,16 @@
 }
 
 .container {
+    /*
+    This accidentally applied to things on the view draft page.
+    Bring this back once i've got it applied to only the right things, and actually works. 
+    Largely replaced by the .draftContainer styling in draft_page.css which is also currently commented out.
+
     border: .5px solid white;
     margin-bottom: 40px;
     max-height: 450px;
     overflow-y: scroll;
+    */
 }
 
 .fill {
