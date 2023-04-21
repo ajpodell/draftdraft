@@ -1,0 +1,31 @@
+.draftOrder {
+}
+
+.draftContainer {
+    margin-bottom: 40px;
+}
+
+.collapsibleTitle {
+    text-decoration: none;
+    color: white;
+}
+
+.pickOrderTable {
+    max-height: 450px;
+}
+
+.playerQueue {
+    /*
+    Want to try to get this scrollable, but i messed up somewhere and now im tired.
+    It still collapses though
+
+    max-height: 300px;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    */
+}
+
+.playerQueueContainer {
+    overflow: hidden;
+}

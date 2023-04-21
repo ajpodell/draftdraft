@@ -21,39 +21,45 @@
 {% endif %}
 {% endwith %}
 
-<!-- only show this if admin -->
-{% if current_user.is_admin %}
-<form action = "/reset_draft" method="post">
-    <button type="submit">Reset DraftDraft</button>
-</form>
-{% endif %}
-
 <!-- display None here then show in script. Search bar loading slowly so this maybe looks nicer? -->
 <div id="draftPage" style="display: None"> 
-    <div id="draftOrder">
-        <h1>Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}Draft order not set{% endif %}</h1>
-        <table class="table table-bordered border-3">
-            <tr>
-                <th>Order</th>
-                <th>Team</th>
-            </tr>
-            {% for pick in pick_order %}
+    <!-- put this into a component -->
+    <div id="draftOrder" class="draftContainer draftOrder">
+        <h2>
+            <a class="collapsibleTitle" data-bs-toggle="collapse" href="#pickOrder"  role="button" aria-expanded="true" aria-controls="pickOrder">
+                Next Pick: {% if next_pick %}{{ next_pick.team_name }}{% else %}Draft order not set{% endif %}
+            </a>
+        </h2>
+        <div id="pickOrder" class="table-responsive collapse show pickOrderTable">
+            <table class="table table-bordered border-3">
+                <tr>
+                    <th>Order</th>
+                    <th>Team</th>
+                </tr>
+                {% for pick in pick_order %}
 
-            <tr class={{ "table-primary" if pick.pick_order == next_pick.pick_order}}>
-                <td>{{ pick.pick_order }}</td>
-                <td>{{ pick.team.team_name }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                <tr class={{ "table-primary" if pick.pick_order == next_pick.pick_order}}>
+                    <td>{{ pick.pick_order }}</td>
+                    <td>{{ pick.team.team_name }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 
-    <div id="playerQueue">
-        <h3>Your Queue</h3>
-        {{ draftBoard.draftBoard(playerQueue, "PLAYERQUEUE") }}
+    <div id="playerQueue" class="draftContainer playerQueue">
+        <h2>
+            <a class="collapsibleTitle" data-bs-toggle="collapse" href="#playerQueueContainer"  role="button" aria-expanded="true" aria-controls="playerQueueContainer">
+                Your Queue
+            </a>
+        </h2>
+        <div id="playerQueueContainer" class="collapse show playerQueueContainer">
+            {{ draftBoard.draftBoard(playerQueue, "PLAYERQUEUE") }}
+        </div>
     </div>
 
     <div id="draftboardContainer">
-        <h3> Draftboard</h3>
+        <h2> Draftboard</h2>
         {{ draftBoard.draftBoard(players, "DRAFTBOARD") }}
     </div>
 </div>
