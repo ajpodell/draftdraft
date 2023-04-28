@@ -173,6 +173,11 @@ def view_draft():
 @draft.route('/draft_player', methods=['POST'])
 def draft_player():
     """ this can maybe just be the same 'pick' endpoint' if i figure out how this works"""
+    # block picks since draft is over
+    flash('Draft is over, what are you doing?', 'error')
+    return redirect(url_for('draft.make_pick'))
+
+    # actual implementation is here
     form = request.form
     selected_player_id = form['player_id']
     user_id = current_user.user_id
