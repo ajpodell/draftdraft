@@ -18,17 +18,20 @@
            data-show-columns="false"
            data-show-multi-sort="false"
            data-pagination="true"
-           data-page-size="25"
+           data-page-size="75"
            data-search="true"
            data-toolbar="#filteringContainer"
+           data-sort-order="asc"
+           data-sort-name="draftDraftPick"
     >
         <thead>
             <tr>
-                <th data-field="pick" data-filter-control="input" data-sortable="false" scope="col">Pick</th>
+                <th data-field="draftDraftPick" data-filter-control="input" data-sortable="true" scope="col">DraftDraft Pick</th>
                 <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
                 <th data-field="player" data-filter-control="input" data-sortable="false" scope="col">Player</th>
                 <th data-field="college" data-filter-control="select" data-sortable="false" scope="col">College</th>
                 <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
+                <th data-field="nflPick" data-filter-control="input" data-sortable="false" scope="col">NFL Pick</th>
             </tr>
         </thead>
 
@@ -36,12 +39,13 @@
 
         <tbody>
             {% for selection in selections_desc %}
-                <tr>
+                <tr class={{ "table-success" if selection.team.username == current_user.username }}>
                     <td>{{ selection.draftdraft_selection }}</td>
                     <td>{{ selection.team.username }}</td>
                     <td>{{ selection.player.player_name }}</td>
                     <td>{{ selection.player.college_team }}</td>
                     <td>{{ selection.player.position }}</td>
+                    <td>{{ selection.player.nfl_draft_pick_formatted or '-' }}</td>
                 </tr>
             {% endfor %}
         </tbody>
