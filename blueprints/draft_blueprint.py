@@ -109,89 +109,15 @@ def make_pick():
 @draft.route('/add_to_queue', methods=['POST'])
 def add_to_queue():
     form = request.form
-
-    # figure out what the next queue order should be by grabbing the current last player and adding 1 to its queue order
-    lastQueue = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).order_by(DraftQueue.queue_order.desc()).first()
-    nextQueueOrder = 0
-
-    if (lastQueue == None):
-        nextQueueOrder = 0
-    else:
-        nextQueueOrder = lastQueue.queue_order + 1
-
     db.session.add(
         DraftQueue(
             player_id=form['player_id'],
             team_id=current_user.user_id,
-            queue_order = nextQueueOrder
         )
-        
     )
     db.session.commit()
     return redirect(url_for('draft.make_pick'))
 
-@draft.route('/move_up_queue', methods=['POST'])
-def move_up_queue():
-    form = request.form
-    player_Id = form['player_id']
-
-    # grabbing the players current position in the queue
-    currentQueueRow = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(player_id = player_Id).first()
-
-    if (currentQueueRow.queue_order == 0):
-        return redirect(url_for('draft.home'))
-    
-    # grabbing the player queue object above the row that was clicked
-    queueRowAbove = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(queue_order = currentQueueRow.queue_order - 1).first()
-
-    # swapping the two rows in the queue
-    db.session.query(DraftQueue).filter_by(row_id=currentQueueRow.row_id).update({DraftQueue.queue_order: currentQueueRow.queue_order - 1})
-    db.session.query(DraftQueue).filter_by(row_id=queueRowAbove.row_id).update({DraftQueue.queue_order: queueRowAbove.queue_order + 1})
-
-    db.session.commit()
-    return redirect(url_for('draft.home'))
-
-@draft.route('/move_down_queue', methods=['POST'])
-def move_down_queue():
-    form = request.form
-    player_Id = form['player_id']
-
-    # grabbing the players current position in the queue and the last row in the queue
-    currentQueueRow = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(player_id = player_Id).first()
-    lastQueue = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).order_by(DraftQueue.queue_order.desc()).first()
-
-    if (currentQueueRow.queue_order == lastQueue.queue_order):
-        return redirect(url_for('draft.home'))
-    
-    # grabbing the player queue object below the row that was clicked
-    queueRowBelow = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(queue_order = currentQueueRow.queue_order + 1).first()
-
-    # swapping the two rows in the queue
-    db.session.query(DraftQueue).filter_by(row_id=currentQueueRow.row_id).update({DraftQueue.queue_order: currentQueueRow.queue_order + 1})
-    db.session.query(DraftQueue).filter_by(row_id=queueRowBelow.row_id).update({DraftQueue.queue_order: queueRowBelow.queue_order - 1})
-
-    db.session.commit()
-    return redirect(url_for('draft.home'))
-
-@draft.route('/remove_from_queue', methods=['POST'])
-def remove_from_queue():
-    form = request.form
-    player_Id = form['player_id']
-
-    currentQueueRow = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(player_id = player_Id).first()
-    currentQueueOrder = currentQueueRow.queue_order    
-
-    # remove row that was clicked
-    db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter_by(player_id = player_Id).delete()
-
-    # update queue order for every row below
-    rowsToMove = db.session.query(DraftQueue).filter_by(team_id = current_user.user_id).filter(DraftQueue.queue_order > currentQueueOrder)
-
-    for row in rowsToMove:
-        db.session.query(DraftQueue).filter_by(row_id=row.row_id).update({DraftQueue.queue_order: row.queue_order - 1})
-
-    db.session.commit()
-    return redirect(url_for('draft.home'))
 
 def players():
     # TODO: have an "is_picked" property - can probably do this as a hybrid python thing on the model
