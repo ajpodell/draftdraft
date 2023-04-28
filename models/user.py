@@ -31,7 +31,7 @@ class User(UserMixin, db.Model):
     def standings(cls, dbsession):
         users = dbsession.query(User).all()
 
-        users = sorted(users, key=lambda u: u.team_score)
+        users = sorted(users, key=lambda u: u.team_score_weighted(non_picked_score=999))
         if not users:
             return
 
@@ -53,8 +53,11 @@ class User(UserMixin, db.Model):
 
     @property
     def team_score(self):
+        return self.team_score_weighted(non_picked_score=0)
+
+    def team_score_weighted(self, non_picked_score=0):
         """ get the current score"""
-        return sum(selection.player.nfl_draft_pick or 0 for selection in self.selections)
+        return sum(selection.player.nfl_draft_pick or non_picked_score for selection in self.selections)
 
     @property
     def team_name(self):
@@ -68,4 +71,3 @@ class User(UserMixin, db.Model):
     @property
     def pick_order(self):
         return self.pick.pick_order
-
