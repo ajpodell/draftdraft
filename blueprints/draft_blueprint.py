@@ -60,7 +60,7 @@ def generate_leaderboard(leaderboard_type):
         .join(Selection, Selection.player_id == Player.player_id)
         .join(User, Selection.selecting_team_id == User.user_id)
         .order_by(nulls_last(sort_dir))
-        .limit(3)
+        .limit(10)
         .all()
     )
 
