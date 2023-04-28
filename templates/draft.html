@@ -11,45 +11,50 @@
 
 {% block content %}
     <!-- The full draft board. can we make this a max height and then have a scrollbar? -->
-    <table class='table table-bordered border-3'
-           id={{ "draftResultsTable" }}
-           data-filter-control="false"
-           data-show-search-clear-button="false"
-           data-show-columns="false"
-           data-show-multi-sort="false"
-           data-pagination="true"
-           data-page-size="75"
-           data-search="true"
-           data-toolbar="#filteringContainer"
-           data-sort-order="asc"
-           data-sort-name="draftDraftPick"
-    >
-        <thead>
-            <tr>
-                <th data-field="draftDraftPick" data-filter-control="input" data-sortable="true" scope="col">DraftDraft Pick</th>
-                <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
-                <th data-field="player" data-filter-control="input" data-sortable="false" scope="col">Player</th>
-                <th data-field="college" data-filter-control="select" data-sortable="false" scope="col">College</th>
-                <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
-                <th data-field="nflPick" data-filter-control="input" data-sortable="false" scope="col">NFL Pick</th>
-            </tr>
-        </thead>
+    <h3 class="m-4">
+        <a class="collapsibleTitle" data-bs-toggle="collapse" href="#draftDraftPicks"  role="button" aria-expanded="true" aria-controls="draftDraftPicks"> Draft draft picks
+        </a>
+    </h3>
 
-        <h3 class="m-4"> Draft draft picks </h3>
-
-        <tbody>
-            {% for selection in selections_desc %}
-                <tr class={{ "table-success" if selection.team.username == current_user.username }}>
-                    <td>{{ selection.draftdraft_selection }}</td>
-                    <td>{{ selection.team.username }}</td>
-                    <td>{{ selection.player.player_name }}</td>
-                    <td>{{ selection.player.college_team }}</td>
-                    <td>{{ selection.player.position }}</td>
-                    <td>{{ selection.player.nfl_draft_pick_formatted or '-' }}</td>
+    <div id="draftDraftPicks" class="collapse show">
+        <table class='table table-bordered border-3'
+            id={{ "draftResultsTable" }}
+            data-filter-control="false"
+            data-show-search-clear-button="false"
+            data-show-columns="false"
+            data-show-multi-sort="false"
+            data-pagination="true"
+            data-page-size="75"
+            data-search="true"
+            data-toolbar="#filteringContainer"
+            data-sort-order="asc"
+            data-sort-name="draftDraftPick"
+        >
+            <thead>
+                <tr>
+                    <th data-field="draftDraftPick" data-filter-control="input" data-sortable="true" scope="col">DraftDraft Pick</th>
+                    <th data-field="team" data-filter-control="input" data-sortable="false" scope="col">Team</th>
+                    <th data-field="player" data-filter-control="input" data-sortable="false" scope="col">Player</th>
+                    <th data-field="college" data-filter-control="select" data-sortable="false" scope="col">College</th>
+                    <th data-field="position" data-filter-control="select" data-sortable="false" scope="col">Position</th>
+                    <th data-field="nflPick" data-filter-control="input" data-sortable="false" scope="col">NFL Pick</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+
+            <tbody>
+                {% for selection in selections_desc %}
+                    <tr class={{ "table-success" if selection.team.username == current_user.username }}>
+                        <td>{{ selection.draftdraft_selection }}</td>
+                        <td>{{ selection.team.username }}</td>
+                        <td>{{ selection.player.player_name }}</td>
+                        <td>{{ selection.player.college_team }}</td>
+                        <td>{{ selection.player.position }}</td>
+                        <td>{{ selection.player.nfl_draft_pick_formatted or '-' }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
     <hr class="m-5">
     <h3 class="m-4"> Team by team results </h3>
