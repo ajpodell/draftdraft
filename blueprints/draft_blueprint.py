@@ -23,6 +23,8 @@ from models.user import User
 
 draft = Blueprint('draft', __name__)
 
+HOMEPAGE = 'draft.view_draft'  # need to use this, total pain to not have string vars
+
 
 @draft.before_request
 def check_valid_login():
@@ -87,11 +89,13 @@ def next_up():
 
     return next(team for team in all_teams if team.pick.pick_order == pick_within_round)
 
-
-@draft.route('/home')  # maybe theres a better way to do url_for('/')
 @draft.route('/')
-def home():
-    """ This is the main page of the app. As of now it shows the draft order and board."""
+def index():
+    return view_draft()
+
+@draft.route('/make_pick')  # maybe theres a better way to do url_for('/')
+def make_pick():
+    """ this is the main page while the draft is going on"""
     # kind of want to put home in a dedicated "make pick" page - but thats a later problem
     pick_order = db.session.query(Draft).order_by(Draft.pick_order)
 
@@ -112,7 +116,7 @@ def add_to_queue():
         )
     )
     db.session.commit()
-    return redirect(url_for('draft.home'))
+    return redirect(url_for('draft.make_pick'))
 
 
 def players():
@@ -152,14 +156,14 @@ def add_selection():
 @draft.route('/draft')  # would be cool to have a "league" template var
 def view_draft():
     # TODO: generally not a fan of passing around sqlalchemy objects --- but it is pretty convenient so :shrug:
-    all_picks_reversed = db.session.query(Selection).order_by(desc(Selection.draftdraft_selection)).all()
+    all_picks = db.session.query(Selection).order_by(Selection.draftdraft_selection).all()
 
     # get all teams
     teams = db.session.query(User).all()
 
     team_standings = User.standings(db.session)
     return render_template('draft.html',
-                           selections_desc=all_picks_reversed,
+                           selections_desc=all_picks,
                            teams=teams,
                            best_selections=generate_leaderboard('best'),
                            worst_selections=generate_leaderboard('worst'),
@@ -177,17 +181,17 @@ def draft_player():
     next_pick = next_up()
     if next_pick is None:
         flash('Draft order not yet set', 'error')
-        return redirect(url_for('draft.home'))
+        return redirect(url_for('draft.make_pick'))
 
     # picked = db.session
     picked = Selection.query.filter_by(player_id=selected_player_id).one_or_none()
     if (picked):
         flash('Player already selected', 'error')
-        return redirect(url_for('draft.home'))
+        return redirect(url_for('draft.make_pick'))
 
     if not current_user.user_id == next_pick.user_id and not current_user.is_admin:
         flash('Not your pick', 'error')
-        return redirect(url_for('draft.home'))
+        return redirect(url_for('draft.make_pick'))
 
     selection = Selection(player_id=selected_player_id,
                           selecting_team_id=next_pick.user_id)  # wasnt working with team_id
@@ -219,7 +223,7 @@ def reset_draft():
         db.session.add(Draft(team_id=team.user_id, pick_order=pick))
         db.session.commit()
 
-    return redirect(url_for('draft.home'))
+    return redirect(url_for('draft.make_pick'))
 
 
 @draft.route('/score_player', methods=['POST'])
@@ -231,15 +235,11 @@ def score_player():
     try:
         int(nfl_draft_pick)  # can raise if None (maybe others)
     except:
-        return redirect(url_for('draft.home'))
+        return redirect(url_for('draft.admin_tools'))
 
-    if not int(nfl_draft_pick):
-        # FLASH
-        return redirect(url_for('draft.home'))  # maybe should bring back render_home()
-    print('updating')
     db.session.query(Player).filter_by(player_id=player_id).update({Player.nfl_draft_pick: nfl_draft_pick})
     db.session.commit()
-    return redirect(url_for('draft.home'))
+    return redirect(url_for('draft.admin_tools'))
 
 
 @draft.route('/admin_tools')
