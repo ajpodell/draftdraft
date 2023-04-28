@@ -52,7 +52,7 @@ def login_post():
     # login code goes here
     username = request.form.get('username')
     password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    remember = True if request.form.get('remember-me') else False
 
     user = User.query.filter_by(username=username).first()
 
