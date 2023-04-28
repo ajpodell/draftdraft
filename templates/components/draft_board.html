@@ -37,14 +37,6 @@
                     {% if boardType == "DRAFTBOARD" or boardType == "PLAYERQUEUE" %}
                     <th data-field="draft_btn" data-filter-control="" data-show-filter-control-switch="true" data-filter-control-visible="true" data-filter-custom-search="gjo" scope="col"></th>
                     {% endif %}
-                   
-                    
-                    {% if boardType == "PLAYERQUEUE" %}
-                    <th data-field="moveUp" scope="col">Move Up</th>
-                    <th data-field="moveDown" scope="col">Move Down</th>
-                    <th data-field="remove" scope="col">Remove</th>
-                    {% endif %}
-
                     <th data-field="is_drafted" class="hidden-value" colspan=0></th>
 
                     {% if boardType == "SCOREBOARD" %}
@@ -77,32 +69,6 @@
                             </form>
                         </td>
                         {% endif %}
-
-                        
-                        {% if boardType == "PLAYERQUEUE" %}
-                        <td>
-                            <form action="/move_up_queue" method="post">
-                                <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                                <!-- would be nice to have this also disable if they are already in your queue -->
-                                <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>^</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="/move_down_queue" method="post">
-                                <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                                <!-- would be nice to have this also disable if they are already in your queue -->
-                                <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>V</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="/remove_from_queue" method="post">
-                                <input type="text" name="player_id" value={{ player.player_id }} readonly=true class="hidden-value"/>
-                                <!-- would be nice to have this also disable if they are already in your queue -->
-                                <button class="btn btn-secondary" type="submit" {% if player.is_selected %}disabled{% endif %}>X</button>
-                            </form>
-                        </td>
-                        {% endif %}
-
                         <td value={{player.is_selected}} class="hidden-value">{{player.is_selected}}</td>
                         {% if boardType == "SCOREBOARD" %}
                         <td>
