@@ -159,7 +159,7 @@ def view_draft():
     all_picks = db.session.query(Selection).order_by(Selection.draftdraft_selection).all()
 
     # get all teams
-    teams = db.session.query(User).all()
+    teams = sorted(db.session.query(User).all(), key=lambda user: user.team_score, reverse=True)
 
     team_standings = User.standings(db.session)
     return render_template('draft.html',
