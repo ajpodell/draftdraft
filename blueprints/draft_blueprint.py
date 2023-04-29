@@ -158,10 +158,8 @@ def view_draft():
     # TODO: generally not a fan of passing around sqlalchemy objects --- but it is pretty convenient so :shrug:
     all_picks = db.session.query(Selection).order_by(Selection.draftdraft_selection).all()
 
-    # get all teams
-    teams = sorted(db.session.query(User).all(), key=lambda user: user.team_score, reverse=True)
-
     team_standings = User.standings(db.session)
+    teams = list(team_standings.keys())
     return render_template('draft.html',
                            selections_desc=all_picks,
                            teams=teams,
